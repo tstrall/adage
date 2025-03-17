@@ -27,7 +27,7 @@ This repository (**aws-deployment-guide**) serves as the **documentation hub**, 
 ---
 
 ## **📖 How It Works**
-1. **Terraform infrastructure modules** in `aws-iac` expect input from AWS Parameter Store.  
+1. **Terraform infrastructure modules** in **`aws-iac`** expect input from AWS Parameter Store.  
 2. **Configuration files in `aws-config`** define what gets deployed.  
 3. **A CI/CD pipeline syncs the config repo with AWS Parameter Store**, ensuring that Terraform only deploys **pre-approved** components.  
 4. **Lambda functions in `aws-lambda` resolve dependencies dynamically**, making them **independent of Terraform deployments**.  
@@ -55,7 +55,7 @@ git clone https://github.com/tstrall/aws-lambda.git
 ### **2️⃣ Deploy the Initial Infrastructure**
 Ensure the config repo has the necessary entries before applying Terraform:
 ```sh
-cd aws-iac
+cd aws-iac/components/vpc
 terraform init
 terraform apply -var="nickname=main-vpc"
 ```
