@@ -1,5 +1,25 @@
 
-# AWS Deployment Guide 🚀  
+# AWS Deployment Guide
+
+## 🧠 Core Design Principles
+
+This project is guided by a fabric of interwoven ideas that enable scalable, secure, and flexible AWS infrastructure.
+
+Each principle supports the others, forming a composable system where infrastructure, configuration, and services can evolve independently — yet always remain connected.
+
+These principles include:
+
+- **Build Once, Deploy Anywhere** – Reusable Terraform components across all environments.
+- **Configuration Is the Source of Truth** – Git-controlled configs drive every deployment.
+- **Immutable Infrastructure** – Replace rather than patch, enabling reliable rollouts.
+- **Dynamic Dependency Resolution** – Services discover dependencies at runtime via nicknames.
+- **Separation of Concerns** – Infra, config, and app code live in independent repos.
+- **External System Referencing** – Reference systems you didn’t create as first-class citizens.
+- **Git as the Gatekeeper** – Only what’s defined in Git gets deployed.
+- **Optional Smart Caching** – Runtime refresh logic when failures occur.
+- **LocalStack-Friendly by Default** – Develop and test locally with minimal cost.
+
+➡️ [View the full explanation & diagram »](docs/design-principles.md)
 
 ## **Overview**  
 This repository explains how to implement a **Configuration-Driven AWS Deployment Model**, allowing you to:  
