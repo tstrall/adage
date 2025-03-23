@@ -1,4 +1,3 @@
-
 # AWS Deployment Guide
 
 ## 🧠 Core Design Principles
@@ -19,7 +18,7 @@ These principles include:
 - **Optional Smart Caching** – Runtime refresh logic when failures occur.
 - **LocalStack-Friendly by Default** – Develop and test locally with minimal cost.
 
-➡️ [View the full explanation & diagram »](docs/design-principles.md)
+➡️ [View the full explanation »](docs/design-principles.md)
 
 ## **Overview**  
 This repository explains how to implement a **Configuration-Driven AWS Deployment Model**, allowing you to:  
