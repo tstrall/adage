@@ -91,6 +91,11 @@ cd aws-lambda/user-auth-service
 - **All deployments are controlled through Git**, ensuring version history and approvals.  
 - **IAM policies can restrict who modifies `/aws/.../config` entries**, ensuring **only authorized changes** get deployed.  
 - **Secrets are stored in AWS Secrets Manager, keeping sensitive information secure.**  
+---
+
+## 🧠 Project Background
+
+This project represents independent work and architectural ideas I’ve developed over the years, some of which originated as conceptual proposals or rejected initiatives in prior roles. The implementations are entirely original, built from scratch outside of any employment context.
 
 ---
 
