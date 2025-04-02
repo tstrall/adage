@@ -1,6 +1,6 @@
 # AWS Deployment Guide
 
-## 🧠 Core Design Principles
+## Core Design Principles
 
 This project is guided by a fabric of interwoven ideas that enable scalable, secure, and flexible AWS infrastructure.
 
@@ -18,107 +18,147 @@ These principles include:
 - **Optional Smart Caching** – Runtime refresh logic when failures occur.
 - **LocalStack-Friendly by Default** – Develop and test locally with minimal cost.
 
-➡️ [View the full explanation »](design-principles/README.md)
+➡️ [View the full explanation](./design-principles/README.md)
 
 ---
 
-## 📖 Overview
+## First-Time Setup?
+
+Start here if you're creating a brand new AWS account or setting up Identity Center for the first time:
+
+👉 [AWS Bootstrap Checklist](./getting-started/bootstrap-checklist.md)
+
+---
+
+## Quickstart: Build a Serverless Static Website
+
+Once your AWS account is bootstrapped and Identity Center is set up, follow this quickstart to explore the process of deploying a serverless static site using CloudFront and S3:
+
+👉 [Serverless Static Website Quickstart](./quickstarts/serverless-site.md)
+
+This guide explains the configuration-driven approach and planned Terraform modules required to deploy your own secure, static website.
+
+---
+
+## Overview
 
 This repository explains how to implement a **Configuration-Driven AWS Deployment Model**, allowing you to:
 
-- **Build AWS infrastructure once, then deploy dynamically via configuration updates.**
-- **Separate infrastructure (IaC), configuration (JSON), and application code (Lambdas).**
-- **Resolve dependencies dynamically using AWS Parameter Store, eliminating hardcoded references.**
-- **Ensure security and auditability by managing deployments through Git.**
+- Build AWS infrastructure once, then deploy dynamically via configuration updates.
+- Separate infrastructure (IaC), configuration (JSON), and application code (Lambdas).
+- Resolve dependencies dynamically using AWS Parameter Store, eliminating hardcoded references.
+- Ensure security and auditability by managing deployments through Git.
 
 ---
 
-## 📂 Repository Structure
+## How the Repositories Work Together
 
-This model relies on three coordinated repositories:
+This model requires **three Git repositories** that interact to create a fully managed AWS environment:
 
-1️⃣ **[`aws-iac`](https://github.com/tstrall/aws-iac)** – Terraform-based Infrastructure as Code (VPC, RDS, IAM, etc.)  
-2️⃣ **[`aws-config`](https://github.com/tstrall/aws-config)** – JSON-based configuration defining what gets deployed  
-3️⃣ **[`aws-lambda`](https://github.com/tstrall/aws-lambda)** – Independently deployed Lambda functions
+- [`aws-iac`](https://github.com/tstrall/aws-iac) – Terraform-based Infrastructure as Code (VPC, RDS, IAM, etc.)
+- [`aws-config`](https://github.com/tstrall/aws-config) – JSON-based configuration defining what gets deployed
+- [`aws-lambda`](https://github.com/tstrall/aws-lambda) – Independent Lambda functions that dynamically resolve dependencies
 
-This repository (**`aws-deployment-guide`**) acts as the documentation and setup guide.
-
----
-
-## 🔗 Quick Links
-
-- **[IaC Repo: aws-iac](https://github.com/tstrall/aws-iac)** – Terraform modules for AWS infrastructure
-- **[Config Repo: aws-config](https://github.com/tstrall/aws-config)** – Deployment configurations in JSON
-- **[Lambda Repo: aws-lambda](https://github.com/tstrall/aws-lambda)** – Independently deployed Lambda functions
-- **[Core Design Principles](./design-principles/)** – Architectural philosophy
+This repository (**aws-deployment-guide**) serves as the **documentation hub**, providing a step-by-step guide for using these repos together.
 
 ---
 
-## 📚 Implementation Guides
+## Implementation Guides
 
-These step-by-step setup guides walk through enabling core functionality:
+These guides walk through setup and configuration for each critical part of the system:
 
-- 🧑‍💼 [Identity Center Admin Setup](./identity-center/README.md)
-- 🏗️ [Organization Structure: dev & prod accounts](./org-structure/README.md)
-- 🔄 [Cross-Account Access](./cross-account-access/README.md)
-- 💰 [Cost Management: Budgets & Billing Alerts](./cost-management/README.md)
-- 🛡️ [Security Baseline: CloudTrail, GuardDuty, Config](./security-baseline/README.md)
-- 🏷️ [Tagging Policy: Standards & Enforcement](./tagging-policy/README.md)
+- [Identity Center Admin Setup](./identity-center/README.md)
+- [Organization Structure: dev & prod accounts](./org-structure/README.md)
+- [Cross-Account Access](./cross-account-access/README.md)
+- [Cost Management: Budgets & Billing Alerts](./cost-management/README.md)
+- [Security Baseline: CloudTrail, GuardDuty, Config](./security-baseline/README.md)
+- [Tagging Policy: Standards & Enforcement](./tagging-policy/README.md)
 
 ---
 
-## 🔧 Getting Started
+## Setting Up
 
-### 1️⃣ Clone the Repositories
-```sh
-git clone https://github.com/tstrall/aws-deployment-guide.git
+This project follows a **configuration-driven deployment model**. Terraform only deploys what is defined in AWS Parameter Store.
+
+### Step 1: Clone the Repositories
+
+```bash
 git clone https://github.com/tstrall/aws-iac.git
 git clone https://github.com/tstrall/aws-config.git
 git clone https://github.com/tstrall/aws-lambda.git
 ```
 
-### 2️⃣ Deploy the Initial Infrastructure
-Ensure the config repo has the necessary entries before applying Terraform:
-```sh
+### Step 2: Define and Push Configuration
+
+Use the `aws-config` repo to define what infrastructure or services you want to deploy.  
+Then push those configuration entries to AWS Parameter Store using your CI/CD workflow or a helper script.
+
+Each configuration entry is tied to a **nickname** (like `main`), which identifies a specific instance of a component.
+
+For example, to deploy a VPC nicknamed `main`, define a config like:
+
+```json
+{
+  "cidr_block": "10.0.0.0/16",
+  "enable_dns_support": true,
+  "enable_dns_hostnames": true
+}
+```
+
+Push it to Parameter Store under:
+
+```
+/aws/vpc/main/config
+```
+
+Terraform will read this config and deploy the `vpc` module accordingly.
+
+---
+
+### Step 3: Deploy with Terraform
+
+Each Terraform component is **nickname-driven**.  
+The nickname determines which configuration entry is read from Parameter Store.
+
+To deploy the `vpc` component using the config at `/aws/vpc/main/config`:
+
+```bash
 cd aws-iac/components/vpc
 terraform init
-terraform apply -var="nickname=main-vpc"
+terraform apply -var="nickname=main"
 ```
 
-### 3️⃣ Deploy Lambda Services Independently
-```sh
-cd aws-lambda/user-auth-service
-./deploy.sh
-```
+Terraform will:
+
+- Read the config from `/aws/vpc/main/config`
+- Deploy the infrastructure
+- Write outputs to `/aws/vpc/main/runtime`
 
 ---
 
-## 🔐 Security & Compliance
+## Security & Compliance
 
-- **All deployments are controlled through Git**, ensuring version history and approvals
-- **IAM policies can restrict who modifies `/aws/.../config` entries**, ensuring **only authorized changes** get deployed
-- **Secrets are stored in AWS Secrets Manager**, keeping sensitive information secure
-
----
-
-## 🧠 Project Background
-
-This project represents independent work and architectural ideas I’ve developed over the years, some of which originated as conceptual proposals or rejected initiatives in prior roles. The implementations are entirely original, built from scratch outside of any employment context.
+- All deployments are controlled through Git, ensuring version history and approvals
+- IAM policies can restrict who modifies `/aws/.../config` entries, enabling secure delegation
+- Secrets are stored in AWS Secrets Manager, keeping sensitive information secure
 
 ---
 
-## 📌 Next Steps
+## Project Background
 
-Want to implement this in your AWS environment? Here’s what to do next:
-
-1️⃣ **Fork and customize the repos** to fit your organization’s needs  
-2️⃣ **Set up a CI/CD pipeline** to automate syncing config updates to AWS Parameter Store  
-3️⃣ **Define IAM policies** to ensure secure access control
-
-📩 **Questions? Reach out or contribute!**  
-This is an open-source approach, and improvements are always welcome.
+This project represents independent work and architectural ideas developed over years of hands-on AWS experience. The implementations are original and designed for clarity, repeatability, and low friction in multi-account AWS environments.
 
 ---
 
-📢 **Like this approach? Star the repo and follow for updates!** 🚀
+## Next Steps
 
+Want to implement this in your AWS environment?
+
+- Fork and customize the repos to fit your organization’s needs
+- Set up a CI/CD pipeline to sync config with Parameter Store
+- Define IAM policies and tagging standards to enforce structure and visibility
+
+---
+
+Questions or ideas? Open an issue or submit a pull request.  
+Like this approach? Star the repo and follow for updates!
