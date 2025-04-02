@@ -1,92 +1,74 @@
-# 🛡️ Security Baseline: CloudTrail, GuardDuty & AWS Config
+# Security Baseline
 
-This guide outlines a minimal but strong security baseline for AWS environments. It assumes IAM Identity Center is enabled, and applies equally across single-account and multi-account setups.
-
----
-
-## 🎯 Goal
-
-- Record all AWS API activity using **CloudTrail**
-- Enable threat detection via **Amazon GuardDuty**
-- Track resource configuration changes with **AWS Config**
-- Store logs in a secure, dedicated S3 bucket (optional but recommended)
+This guide outlines the minimum recommended AWS security services to enable across your organization. These services provide monitoring, auditing, and threat detection — even before deploying any application infrastructure.
 
 ---
 
-## 📜 Step 1: Enable CloudTrail (All API Activity)
+## Overview
 
-1. Go to **CloudTrail** in the AWS Console
-2. Click **Create trail**
-3. Trail type: **Organization trail** (if using AWS Organizations), otherwise create a standard trail
-4. Name your trail: `org-cloudtrail` or `default-cloudtrail`
-5. Apply trail to: **All Regions** (recommended)
-6. Create a new S3 bucket for logs, or use an existing secure logging bucket
-7. Enable log file validation (recommended)
-8. Finish creation
+The goal of a security baseline is to:
 
-✅ CloudTrail now records all API events and stores them in the configured S3 bucket.
+- Monitor all accounts for suspicious activity
+- Ensure changes are auditable
+- Establish consistent behavior across environments
+- Catch misconfigurations early
 
 ---
 
-## 🛡️ Step 2: Enable Amazon GuardDuty (Threat Detection)
+## Services to Enable
 
-1. Go to **GuardDuty** in the AWS Console
-2. Click **Enable GuardDuty**
-3. It will begin monitoring for threats such as:
-   - Unusual API calls
-   - Access from known malicious IPs
-   - Unauthorized data access or exfiltration
-4. (Optional) If using AWS Organizations, configure a delegated administrator account
+### 1. AWS CloudTrail (Organization-wide)
 
-✅ GuardDuty starts analyzing logs and events immediately after activation.
+CloudTrail records all account activity (API calls, console actions, etc.).
 
----
+- Enable CloudTrail in the management account
+- Choose “Apply to all accounts in my organization”
+- Store logs in a dedicated S3 bucket with versioning
+- Use SSE-S3 or SSE-KMS encryption
+- Optionally log to CloudWatch Logs or send alerts via EventBridge
 
-## 🔍 Step 3: Enable AWS Config (Resource Tracking)
+### 2. AWS Config
 
-1. Go to **AWS Config** in the Console
-2. Click **Set up AWS Config**
-3. Record all resources in **All Regions** (recommended)
-4. Create or reuse an S3 bucket to store configuration snapshots
-5. Create an IAM role if prompted
-6. (Optional) Add rules like:
-   - Required tags
-   - No unencrypted volumes
-   - IAM policy change tracking
+AWS Config tracks resource configuration changes over time.
 
-✅ AWS Config will now track changes to your resources and evaluate compliance rules.
+- Enable in each account, or at the organization level
+- Use an aggregator to centralize visibility
+- Store snapshots in S3 for auditing
 
----
+This helps detect drift, noncompliance, or manual changes.
 
-## 🗃️ Optional: Centralized Logging Bucket
+### 3. Amazon GuardDuty
 
-In multi-account setups:
-- Create a dedicated `log-archive` S3 bucket in the management account
-- Set bucket policies to allow CloudTrail logs from all accounts
-- Enable **Object Lock** or **S3 versioning** for immutability (optional but recommended)
+GuardDuty continuously monitors for unusual or malicious activity.
 
-You can also aggregate GuardDuty and Config findings centrally.
+- Enable GuardDuty in each account
+- Choose a delegated administrator (usually the security or management account)
+- Centralize findings in one account
+- Optionally enable auto-remediation via EventBridge rules
 
 ---
 
-## 🔒 Best Practices
+## Optional Enhancements
 
-- Restrict access to log and config buckets using IAM and bucket policies
-- Enable MFA and Identity Center enforcement for all users
-- Monitor IAM usage and periodically review unused roles or keys
-- Use AWS Organizations and SCPs to prevent dangerous actions (e.g., disabling CloudTrail)
+- Enable AWS Security Hub to aggregate findings from Config, GuardDuty, and other tools
+- Use AWS Detective to visualize relationships and investigate issues
+- Set up SCPs (Service Control Policies) to restrict risky actions in production accounts
 
 ---
 
-## ✅ Summary
+## After This
 
-You now have:
-- Full activity logging via CloudTrail
-- Threat detection via GuardDuty
-- Resource tracking and compliance checks via AWS Config
-- (Optionally) centralized logs for visibility and long-term storage
+Once these services are enabled:
 
-These services form the backbone of your AWS security posture.
+- All account activity is logged and auditable
+- Security events are centralized
+- You can define remediation workflows
 
-**Last Updated:** April 2025
+Next:
 
+- [Apply consistent tagging](../tagging-policy/README.md)
+- [Start deploying infrastructure](../quickstarts/serverless-site.md)
+
+---
+
+📚 View all setup guides in the [AWS Deployment Guide](../README.md)

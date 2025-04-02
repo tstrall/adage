@@ -1,108 +1,68 @@
-# 🔄 Cross-Account Access via IAM Identity Center
+# Cross-Account Access
 
-This guide explains how to manage **cross-account access** using **IAM Identity Center** in a multi-account AWS Organization (e.g., management, dev, prod). It shows how users log in once and access multiple accounts based on permission sets.
+This guide explains how to enable secure access across multiple AWS accounts using IAM Identity Center and permission sets.
 
----
-
-## 🎯 Goal
-
-- Allow a single Identity Center user to access multiple AWS accounts (e.g., `dev`, `prod`, `management`)
-- Use permission sets to define access levels
-- Centralize login via the AWS access portal
+In an AWS Organization, users can assume roles in any account where they have been assigned — without needing to manage IAM users or long-lived credentials.
 
 ---
 
-## 🧠 Key Concepts
+## Overview
 
-| Term                      | Meaning                                                                 |
-|---------------------------|-------------------------------------------------------------------------|
-| **Management account**    | The root account in your AWS Organization                               |
-| **Member account**        | A sub-account like `dev` or `prod` managed under Organizations          |
-| **Permission set**        | A reusable access policy attached to a user/group for a specific account |
-| **Identity Center portal**| Central login URL for all AWS account access via SSO                    |
+Cross-account access allows you to:
 
----
-
-## 🪜 Step-by-Step Access Setup
-
-### 1. Confirm AWS Organization is Enabled
-
-- Your `dev` and `prod` accounts should be created and organized under OUs
-- Identity Center should be enabled in the **management account**
-
-### 2. Assign Users to Member Accounts
-
-1. Go to **IAM Identity Center** → **AWS Accounts**
-2. You’ll see all accounts (`management`, `dev`, `prod`)
-3. Select each account and click **Assign users or groups**
-4. Choose your user (e.g., `admin@example.com`)
-5. Attach a **permission set**, e.g.:
-   - `AdministratorAccess` for full control
-   - `ReadOnlyAccess` for limited access
-6. Repeat for each environment as needed
-
-✅ One user, multiple roles across accounts.
+- Access multiple AWS accounts through a single login
+- Assign different permission levels per account (e.g. read-only in `prod`, full access in `dev`)
+- Eliminate direct IAM user management in child accounts
+- Keep centralized control of access through your management account
 
 ---
 
-## 🧭 How Users Access Multiple Accounts
+## Steps
 
-1. Open the Identity Center portal URL (e.g., `https://your-alias.awsapps.com/start`)
-2. Log in using your Identity Center credentials
-3. You’ll see a **tile for each AWS account** where you have access
-4. Each tile shows one or more **permission set roles** (e.g., `AdministratorAccess`, `ReadOnlyAccess`)
-5. Click to launch a console session for the desired account/role
+### 1. Create a Shared Permission Set (if needed)
 
----
+If you haven't already created a permission set (e.g., `AdministratorAccess`, `DeveloperAccess`):
 
-## 🔄 Role Switching & Session Behavior
+- Go to **IAM Identity Center > Permission sets**
+- Create a new permission set using:
+  - AWS-managed policy (e.g., `AdministratorAccess`) **or**
+  - A custom JSON policy for finer control
+- Optionally set session duration and tags
 
-- Each permission set appears as a separate role in the portal
-- Users can open multiple roles in separate tabs (e.g., dev in one tab, prod in another)
-- Session duration is controlled per permission set (default: 1–12 hours)
+### 2. Assign Users to Additional Accounts
 
----
+- Go to **IAM Identity Center > AWS Accounts**
+- Select the target account (e.g., `dev`, `prod`)
+- Choose **Assign users or groups**
+- Select an existing user or group (e.g., `admin`)
+- Attach one or more permission sets
 
-## 🛠️ Programmatic Access (Optional)
+### 3. Log In via the Access Portal
 
-To use the AWS CLI or SDKs with Identity Center credentials:
-
-1. Install the latest AWS CLI
-2. Run:
-```bash
-aws configure sso
-```
-3. Follow prompts to:
-   - Enter your SSO start URL
-   - Select the account and role (e.g., `dev` → `AdministratorAccess`)
-   - Name the profile (e.g., `dev-admin`)
-
-4. Use the profile in CLI commands:
-```bash
-aws s3 ls --profile dev-admin
-```
-
-✅ Programmatic access will use temporary credentials managed by Identity Center.
+- Go to your organization’s AWS access portal (same URL for all accounts)
+- Log in using your IAM Identity Center user
+- You will now see tiles for every assigned account and role
+- Click any tile to assume that role in the corresponding AWS account
 
 ---
 
-## 🔐 Optional: Additional IAM Roles Within Member Accounts
+## Tips
 
-For more advanced delegation:
-- Create IAM roles in `dev` or `prod`
-- Allow trusted Identity Center users or roles to assume them
-- Useful for break-glass access, CI/CD, or granular control beyond permission sets
+- You can assign **different permission sets** per account (e.g., `admin` in `dev`, `read-only` in `prod`)
+- You can also create **groups** (e.g., `Developers`, `Analysts`) and assign those instead of individual users
+- Permission sets are reusable — define once, assign many times
 
 ---
 
-## ✅ Summary
+## After This
 
-You now have:
-- A centralized login for users to access multiple AWS accounts
-- Role-based access managed through Identity Center
-- CLI and SDK integration using `aws configure sso`
+You now have centralized access control across all AWS accounts.
 
-This model simplifies security, access management, and auditing in a multi-account AWS setup.
+Next steps:
 
-**Last Updated:** April 2025
+- [Define your tagging policy](../tagging-policy/README.md)
+- [Enable organization-wide security monitoring](../security-baseline/README.md)
 
+---
+
+📚 View all setup guides in the [AWS Deployment Guide](../README.md)

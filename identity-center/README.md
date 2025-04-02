@@ -1,131 +1,74 @@
-# ✅ AWS Identity Center Admin Setup (Root-to-Admin Transition)
+# Identity Center Setup
 
-This guide documents the secure setup of an AWS account using **IAM Identity Center (formerly AWS SSO)**. It replaces root access with a named admin identity and prepares the account for scalable, secure use—including multi-account and cost visibility support.
+This guide explains how to enable AWS IAM Identity Center, create an admin user, assign permissions, and prepare your account for secure, role-based access.
 
----
-
-## 🌟 Goal
-
-- Secure the root user
-- Set up a named Identity Center admin user (e.g., `admin@example.com`)
-- Use **IAM Identity Center** for modern, centralized identity management
-- Prepare for multi-account (`dev`, `prod`) and cost analysis via tagging
+It replaces the legacy approach of creating IAM users directly, and is now the default AWS-recommended method for managing access.
 
 ---
 
-## 🔐 Step 1: Secure the Root Account
+## Overview
 
-1. Log in to the AWS Console using the root account (e.g., `your-email@example.com`)
-2. Go to **My Security Credentials**
-3. Enable **Multi-Factor Authentication (MFA)** using a virtual authenticator (e.g., Google Authenticator)
-4. Set a strong password
-5. Log out of the root account
+Identity Center allows you to:
 
-📅 **Root account is now secured and reserved for emergency or billing access only.**
+- Use a built-in or external directory for user authentication
+- Assign users to accounts using **permission sets**
+- Log in to multiple AWS accounts via a central portal
+- Eliminate the need for IAM users and long-lived credentials
 
----
-
-## 🌐 Step 2: Enable IAM Identity Center
-
-1. Log back in to the AWS Console as root
-2. Navigate to **IAM Identity Center** (`us-east-1` is the default and recommended region)
-3. Click **Enable** to activate Identity Center
-4. Accept the default identity source: **"Identity Center directory"**
-
-🚀 IAM Identity Center is now active and ready for user management.
+This is the foundation for all access across your AWS environment.
 
 ---
 
-## 👤 Step 3: Create Admin User
+## Steps
 
-1. In Identity Center, go to **Users** > **Add user**
-2. Set:
-   - **Username:** `admin`
-   - **Email address:** your actual email
-   - (Optional) Add first and last name
-3. Skip group assignment if no groups yet created
-4. Click **Add user**
-5. AWS sends a welcome email with a login link
+### 1. Log in as Root and Enable Identity Center
 
-📅 A secure identity-based admin user is now created.
+- Sign in to the [AWS Console](https://console.aws.amazon.com/) as the root user
+- Go to **IAM Identity Center** (region: `us-east-1` recommended)
+- Click **Enable**
 
----
+This will create an Identity Center instance tied to your organization.
 
-## 🛡️ Step 4: Create Permission Set
+### 2. Create a User
 
-1. In Identity Center, go to **AWS Accounts**
-2. Select your current account (Management account)
-3. Click **Assign users or groups**
-4. Choose the newly created user (e.g., `admin`)
-5. Click **Create new permission set**
-   - Name: `AdministratorAccess`
-   - Base it on AWS managed policy: **AdministratorAccess**
-   - Session duration: **8 hours**
-   - Relay State: **leave blank**
-   - Tags:
-     - `Owner = admin`
-     - `Environment = management`
-     - `AccessLevel = admin`
-     - `ProvisionedBy = identity-center`
-6. Complete the wizard to create and assign the permission set
+- Use the built-in directory for now (you can switch to an external identity source later)
+- Create a user named `admin` with a valid email address
+- Accept the default settings (no groups needed yet)
+- The user will receive an email with a temporary password
 
-🚀 The user now has full admin access to the account via Identity Center.
+### 3. Create a Permission Set
 
----
+- Go to **Permission Sets**
+- Click **Create permission set**
+- Choose **Custom permissions** or start with AWS-managed **AdministratorAccess**
+- Optionally:
+  - Set session duration (default: 1 hour)
+  - Add tags (e.g. `Environment=mgmt`, `AccessLevel=admin`)
+- Save the permission set
 
-## 🚪 Step 5: Log in as Admin
+### 4. Assign the User to the Account
 
-1. Open the Identity Center portal URL:  
-   `https://<your-alias>.awsapps.com/start`
-2. Login with the credentials emailed to the user
-3. Select the AWS account and click the `AdministratorAccess` role
+- Go to **AWS Accounts**
+- Select your current account
+- Choose **Assign users or groups**
+- Assign the `admin` user and attach the permission set
 
-🔍 This opens the AWS Console as the new admin—no root access needed for day-to-day use.
+### 5. Log In via the Access Portal
+
+- Visit your organization’s access portal URL (shown in the console)
+- Log in as the `admin` user using the emailed credentials
+- You should see a tile for the account and role you’ve been assigned
 
 ---
 
-## 💺 Optional Next Steps
+## After This
 
-### 📅 Cost Controls
-- Enable **billing alerts** and create a monthly **budget**
-- Activate **Cost Explorer**
-- Tag resources with consistent `Owner`, `Environment`, `CostCenter` values
+Once you can log in using IAM Identity Center, you’re ready to create additional accounts, roles, and permission sets.
 
-### 🔒 Security Enhancements
-- Enable **CloudTrail** and send logs to S3
-- Turn on **GuardDuty** (free trial, low-cost afterward)
-- (Optional) Enable **AWS Config** for resource tracking
+Continue with the next guide:
 
-### 🏛️ Multi-Account Setup
-- Enable **AWS Organizations**
-- Create `dev` and `prod` sub-accounts
-- Share Identity Center permission sets across all accounts
+👉 [Organization Structure](../org-structure/README.md)
 
 ---
 
-## 📂 Tagging Strategy Example
-
-| Key            | Example Value     | Purpose                           |
-|----------------|-------------------|-----------------------------------|
-| `Owner`        | `admin`           | Who owns or created the resource  |
-| `Environment`  | `management`      | Classify by lifecycle stage       |
-| `AccessLevel`  | `admin`           | Useful for identity tracking      |
-| `ProvisionedBy`| `identity-center` | Useful for audit and traceability |
-| `CostCenter`   | `core` or `1000`  | Supports billing allocation       |
-
----
-
-## 📅 Summary
-
-You now have:
-- MFA-protected root account
-- A named admin user using IAM Identity Center
-- Full admin access through permission sets
-- A secure, scalable, and taggable foundation
-
-**Next up:** Enable AWS Organizations and build out your `dev` and `prod` environments!
-
----
-
-**Last Updated:** April 2025  
-
+📚 View all setup guides in the [AWS Deployment Guide](../README.md)

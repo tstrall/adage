@@ -1,110 +1,76 @@
-# 🏷️ Tagging Policy: Standards, Governance & Enforcement
+# Tagging Policy
 
-This document outlines the recommended tagging standards and strategies to support cost tracking, security, governance, and automation across your AWS environment.
+This guide defines how to use consistent tagging across AWS resources to enable cost allocation, security visibility, and team accountability.
 
----
-
-## 🎯 Goal
-
-- Define a consistent tagging schema
-- Enable tag-based cost allocation and filtering
-- Support audits, access control, and automation
-- (Optional) Enforce tag usage using Tag Policies or Config rules
+Tagging is critical for managing large-scale environments — and becomes even more powerful when enforced through infrastructure and policies.
 
 ---
 
-## 🏷️ Recommended Standard Tags
+## Overview
 
-| Key            | Purpose                                | Example Value           |
-|----------------|-----------------------------------------|--------------------------|
-| `Owner`        | Responsible user/team                  | `admin`, `data-team`     |
-| `Environment`  | Lifecycle context                      | `dev`, `prod`, `mgmt`    |
-| `Project`      | Business or technical project grouping | `strall-com`, `infra`    |
-| `CostCenter`   | For billing and chargeback             | `1000`, `ops`, `core`    |
-| `AccessLevel`  | Helps identify roles or permissions    | `read`, `admin`, `ci`    |
-| `ProvisionedBy`| Tool or method that created resource   | `terraform`, `console`   |
-| `CreatedDate`  | Optional for lifecycle tracking        | `2025-04-02`             |
+Standardized tags help you:
+
+- Attribute AWS costs by project, environment, or team
+- Search and filter resources in the console
+- Identify ownership for operational issues
+- Enforce compliance through automation
 
 ---
 
-## ✅ Tagging Best Practices
+## Recommended Tags
 
-- Use **consistent key names and casing** (e.g., `Environment`, not `environment`)
-- Apply tags **automatically** wherever possible (e.g., via Terraform, CDK, or IaC wrappers)
-- Tag **all taggable resources**, including:
-  - EC2, S3, RDS, Lambda, IAM Roles, Security Groups
-  - Budgets, dashboards, VPCs, Parameter Store entries, etc.
-- Use **Cost Allocation Tags** in the Billing Console to include selected tags in billing reports
+Apply these tags consistently to **all AWS resources** — whether created manually or through Terraform:
 
----
-
-## 📊 Enable Cost Allocation Tags
-
-1. Go to **Billing** → **Cost Allocation Tags**
-2. Check the box for each tag you want to track (e.g., `Environment`, `Project`, `CostCenter`)
-3. Click **Activate**
-
-These tags will appear in Cost Explorer within 24 hours.
+| Tag Key      | Description                         | Example        |
+|--------------|-------------------------------------|----------------|
+| `Project`    | The name of the project or service  | `networking`   |
+| `Environment`| Deployment stage                    | `dev`, `prod`  |
+| `Owner`      | Person or team responsible          | `alice`        |
+| `CostCenter` | Billing code (if applicable)        | `1234-app-team`|
 
 ---
 
-## 🚨 Optional Enforcement: Tag Policies
+## Enforcing Tags in Terraform
 
-To prevent tag drift and enforce standards across accounts, use AWS Organizations **Tag Policies**.
+Use the `tags` block in every resource, or define them in your module:
 
-1. Go to **Organizations** → **Tag Policies**
-2. Create a policy like:
-```json
-{
-  "tags": {
-    "Environment": {
-      "tag_key": {
-        "@@assign": ["dev", "prod", "mgmt"]
-      }
-    },
-    "Owner": {
-      "tag_key": {
-        "@@assign": []  // Require but don’t restrict values
-      }
-    }
-  }
+```hcl
+tags = {
+  Project     = "networking"
+  Environment = "dev"
+  Owner       = "alice"
 }
 ```
-3. Apply the policy to your `dev`, `prod`, or root OU
 
-Tag Policies only work on **supported resource types** and don’t retroactively apply to untagged resources.
-
----
-
-## 📜 Optional Enforcement: AWS Config Rules
-
-Use AWS Config to detect (but not block) noncompliant resources.
-
-Examples:
-- `required-tags`
-- `restricted-tag-values`
-
-These can alert you via SNS or appear in Config dashboards.
+You can also use a shared tagging module or locals block to enforce consistency across modules.
 
 ---
 
-## 🛠️ Tag Automation Ideas
+## Organizational Tag Policies (Optional)
 
-- Use Terraform modules with required `tags = { ... }`
-- Create wrapper scripts to enforce tagging via IaC
-- Add CI/CD checks for tagging compliance
-- Use event-based Lambda triggers to flag or auto-tag missing metadata
+If your organization has tagging enforcement enabled:
+
+- Go to **AWS Organizations > Tag Policies**
+- Create a tag policy that defines required tags and allowed values
+- Attach it to the root or specific Organizational Units (OUs)
+
+This lets you block resources that don’t meet your tag standards.
 
 ---
 
-## ✅ Summary
+## After This
 
-You now have:
-- A baseline tagging schema
-- Tag governance tools via Cost Allocation Tags, Tag Policies, and AWS Config
-- Strategies for consistent, automated tagging across environments
+Once tagging is standardized:
 
-Consistent tagging is essential for secure, cost-effective, and well-governed AWS operations.
+- You can filter costs in Cost Explorer by tag
+- IAM policies can be scoped by tags
+- Resource cleanup and ownership tracking becomes easier
 
-**Last Updated:** April 2025
+Next:
 
+- [Review cost visibility setup](../cost-management/README.md)
+- [Deploy your first tagged infrastructure](../quickstarts/serverless-site.md)
+
+---
+
+📚 View all setup guides in the [AWS Deployment Guide](../README.md)

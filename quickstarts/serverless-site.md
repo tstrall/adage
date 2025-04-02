@@ -111,3 +111,9 @@ And Terraform will write runtime values (e.g., distribution ID, S3 URL) to:
 This guide is a high-level overview and placeholder while the supporting Terraform modules are under development.
 
 Once modules are complete, this guide will provide a complete walk-through for deploying your own serverless static site.
+
+---
+
+For more context on the architecture behind this deployment model, see the:
+
+👉 [Core Design Principles](../design-principles/README.md)
