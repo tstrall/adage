@@ -18,25 +18,7 @@ These principles include:
 - **Optional Smart Caching** – Runtime refresh logic when failures occur.
 - **LocalStack-Friendly by Default** – Develop and test locally with minimal cost.
 
-➡️ [View the full explanation](./design-principles/README.md)
-
----
-
-## First-Time Setup?
-
-Start here if you're creating a brand new AWS account or setting up Identity Center for the first time:
-
-👉 [AWS Bootstrap Checklist](./getting-started/bootstrap-checklist.md)
-
----
-
-## Quickstart: Build a Serverless Static Website
-
-Once your AWS account is bootstrapped and Identity Center is set up, follow this quickstart to explore the process of deploying a serverless static site using CloudFront and S3:
-
-👉 [Serverless Static Website Quickstart](./quickstarts/serverless-site.md)
-
-This guide explains the configuration-driven approach and planned Terraform modules required to deploy your own secure, static website.
+➡️ [View the full explanation »](design-principles/README.md)
 
 ---
 
@@ -44,121 +26,102 @@ This guide explains the configuration-driven approach and planned Terraform modu
 
 This repository explains how to implement a **Configuration-Driven AWS Deployment Model**, allowing you to:
 
-- Build AWS infrastructure once, then deploy dynamically via configuration updates.
-- Separate infrastructure (IaC), configuration (JSON), and application code (Lambdas).
-- Resolve dependencies dynamically using AWS Parameter Store, eliminating hardcoded references.
-- Ensure security and auditability by managing deployments through Git.
+- **Build AWS infrastructure once, then deploy dynamically via configuration updates**
+- **Separate infrastructure (IaC), configuration (JSON), and application code (Lambdas)**
+- **Resolve dependencies dynamically using AWS Parameter Store**
+- **Ensure security and auditability by managing deployments through Git**
 
 ---
 
-## How the Repositories Work Together
+## 📂 How the Repositories Work Together
 
-This model requires **three Git repositories** that interact to create a fully managed AWS environment:
+This model is composed of **three Git repositories** plus this documentation repo:
 
-- [`aws-iac`](https://github.com/tstrall/aws-iac) – Terraform-based Infrastructure as Code (VPC, RDS, IAM, etc.)
-- [`aws-config`](https://github.com/tstrall/aws-config) – JSON-based configuration defining what gets deployed
-- [`aws-lambda`](https://github.com/tstrall/aws-lambda) – Independent Lambda functions that dynamically resolve dependencies
+1. **[`aws-iac`](https://github.com/tstrall/aws-iac)** – Terraform modules for reusable AWS infrastructure
+2. **[`aws-config`](https://github.com/tstrall/aws-config)** – Git-controlled JSON config, synced to Parameter Store
+3. **[`aws-lambda`](https://github.com/tstrall/aws-lambda)** – Lambda functions that resolve their dependencies dynamically
 
-This repository (**aws-deployment-guide**) serves as the **documentation hub**, providing a step-by-step guide for using these repos together.
-
----
-
-## Implementation Guides
-
-These guides walk through setup and configuration for each critical part of the system:
-
-- [Identity Center Admin Setup](./identity-center/README.md)
-- [Organization Structure: dev & prod accounts](./org-structure/README.md)
-- [Cross-Account Access](./cross-account-access/README.md)
-- [Cost Management: Budgets & Billing Alerts](./cost-management/README.md)
-- [Security Baseline: CloudTrail, GuardDuty, Config](./security-baseline/README.md)
-- [Tagging Policy: Standards & Enforcement](./tagging-policy/README.md)
+This repository (**aws-deployment-guide**) provides a guided tour and design rationale for using them together.
 
 ---
 
-## Setting Up
+## 🛠️ First-Time Setup
 
-This project follows a **configuration-driven deployment model**. Terraform only deploys what is defined in AWS Parameter Store.
+To prepare an AWS account for use with this framework, follow the [AWS Bootstrap Checklist](./getting-started/bootstrap-checklist.md). It walks through:
 
-### Step 1: Clone the Repositories
+- Security, identity, and billing setup
+- Enabling organizations and account structure
+- Required services like CloudTrail, Config, and GuardDuty
+- Tagging and cost tracking policies
 
-```bash
-git clone https://github.com/tstrall/aws-iac.git
-git clone https://github.com/tstrall/aws-config.git
-git clone https://github.com/tstrall/aws-lambda.git
-```
+---
 
-### Step 2: Define and Push Configuration
+## ⚡ Quickstart: Build Your Own Serverless Static Website
 
-Use the `aws-config` repo to define what infrastructure or services you want to deploy.  
-Then push those configuration entries to AWS Parameter Store using your CI/CD workflow or a helper script.
+Once your AWS account is bootstrapped and Identity Center is set up, follow this quickstart to deploy infrastructure for a serverless static site with CloudFront and S3:
 
-Each configuration entry is tied to a **nickname** (like `main`), which identifies a specific instance of a component.
+👉 [Serverless Static Website Quickstart](./quickstarts/serverless-site.md)
 
-For example, to deploy a VPC nicknamed `main`, define a config like:
+---
 
-```json
-{
-  "cidr_block": "10.0.0.0/16",
-  "enable_dns_support": true,
-  "enable_dns_hostnames": true
-}
-```
+## 📖 Deployment Flow
 
-Push it to Parameter Store under:
+### 1. Push Configuration to AWS Parameter Store
+
+Configuration is defined in `aws-config` and synced to Parameter Store using a CI/CD pipeline or script. Each component receives its config under a path like:
 
 ```
 /aws/vpc/main/config
 ```
 
-Terraform will read this config and deploy the `vpc` module accordingly.
+This defines what will be deployed and how.
 
----
+### 2. Deploy Using Terraform
 
-### Step 3: Deploy with Terraform
+In `aws-iac`, each module reads from Parameter Store and writes its runtime outputs back:
 
-Each Terraform component is **nickname-driven**.  
-The nickname determines which configuration entry is read from Parameter Store.
-
-To deploy the `vpc` component using the config at `/aws/vpc/main/config`:
-
-```bash
+```sh
 cd aws-iac/components/vpc
-terraform init
 terraform apply -var="nickname=main"
 ```
 
-Terraform will:
+Terraform fetches the config for `main` from `/aws/vpc/main/config`, deploys it, and writes runtime info to `/aws/vpc/main/runtime`.
 
-- Read the config from `/aws/vpc/main/config`
-- Deploy the infrastructure
-- Write outputs to `/aws/vpc/main/runtime`
+### 3. Deploy Lambda Services Independently
 
----
+```sh
+cd aws-lambda/user-auth-service
+./deploy.sh
+```
 
-## Security & Compliance
-
-- All deployments are controlled through Git, ensuring version history and approvals
-- IAM policies can restrict who modifies `/aws/.../config` entries, enabling secure delegation
-- Secrets are stored in AWS Secrets Manager, keeping sensitive information secure
+Lambdas resolve all dependencies dynamically using nicknames — no need to update Terraform or hardcode references.
 
 ---
 
-## Project Background
+## 🔐 Security & Compliance
 
-This project represents independent work and architectural ideas developed over years of hands-on AWS experience. The implementations are original and designed for clarity, repeatability, and low friction in multi-account AWS environments.
+- All changes must go through Git — providing version control and auditability
+- IAM permissions can restrict who can modify configuration vs. who can deploy
+- Parameter Store and Secrets Manager separate dynamic values from source code
 
 ---
 
-## Next Steps
+## 📌 Next Steps
 
 Want to implement this in your AWS environment?
 
-- Fork and customize the repos to fit your organization’s needs
-- Set up a CI/CD pipeline to sync config with Parameter Store
-- Define IAM policies and tagging standards to enforce structure and visibility
+1. **Fork and customize the three core repositories**
+2. **Set up a CI/CD pipeline to sync config to Parameter Store**
+3. **Define your IAM strategy and tag policies**
+4. **Deploy your first component using the quickstart**
 
 ---
 
-Questions or ideas? Open an issue or submit a pull request.  
-Like this approach? Star the repo and follow for updates!
+## Concepts & Further Reading
+
+- [Configuration-Driven Design Principles](./design-principles/README.md)
+- [Adaptive Runtime Behavior](./data-science/README.md) — How this architecture enables intelligent, self-adjusting systems
+
+---
+
+📢 Like this approach? Star the repo, follow along, or use it as a base for your own architecture.
