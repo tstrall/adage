@@ -1,74 +1,86 @@
 # Identity Center Setup
 
-This guide explains how to enable AWS IAM Identity Center, create an admin user, assign permissions, and prepare your account for secure, role-based access.
+This guide walks through enabling AWS IAM Identity Center (formerly AWS SSO) and configuring an admin user to securely manage the account.
 
-It replaces the legacy approach of creating IAM users directly, and is now the default AWS-recommended method for managing access.
+This setup replaces traditional IAM users with a centralized, secure, and scalable identity model that works across multiple accounts in an organization.
 
 ---
 
-## Overview
+## Why Use IAM Identity Center?
 
-Identity Center allows you to:
+IAM Identity Center lets you:
 
-- Use a built-in or external directory for user authentication
-- Assign users to accounts using **permission sets**
-- Log in to multiple AWS accounts via a central portal
-- Eliminate the need for IAM users and long-lived credentials
-
-This is the foundation for all access across your AWS environment.
+- Create users with secure credentials (no more IAM access keys)
+- Assign permission sets across multiple AWS accounts
+- Use the AWS access portal for federated login
+- Easily separate human access from automated roles
 
 ---
 
 ## Steps
 
-### 1. Log in as Root and Enable Identity Center
+### 1. Enable IAM Identity Center
 
-- Sign in to the [AWS Console](https://console.aws.amazon.com/) as the root user
-- Go to **IAM Identity Center** (region: `us-east-1` recommended)
-- Click **Enable**
+- From the AWS Console, go to **IAM Identity Center**
+- If prompted, choose a region (usually `us-east-1` or wherever you manage org-wide services)
+- Click **“Enable”** to create the Identity Center instance
 
-This will create an Identity Center instance tied to your organization.
+Once enabled, this becomes your centralized identity and access control plane.
 
-### 2. Create a User
+---
 
-- Use the built-in directory for now (you can switch to an external identity source later)
-- Create a user named `admin` with a valid email address
-- Accept the default settings (no groups needed yet)
-- The user will receive an email with a temporary password
+### 2. Create an Admin User
+
+- Go to **Users** in the Identity Center console
+- Click **Add user**
+- Enter a username (e.g., `admin`) and your email address
+- Choose whether to auto-generate a password or set one manually
+
+You’ll receive a welcome email (if enabled) with login instructions.
+
+---
 
 ### 3. Create a Permission Set
 
-- Go to **Permission Sets**
+- In the left menu, go to **Permission sets**
 - Click **Create permission set**
-- Choose **Custom permissions** or start with AWS-managed **AdministratorAccess**
-- Optionally:
-  - Set session duration (default: 1 hour)
-  - Add tags (e.g. `Environment=mgmt`, `AccessLevel=admin`)
-- Save the permission set
+- Choose **"Use an existing AWS managed policy"**
+- Select **AdministratorAccess**
 
-### 4. Assign the User to the Account
-
-- Go to **AWS Accounts**
-- Select your current account
-- Choose **Assign users or groups**
-- Assign the `admin` user and attach the permission set
-
-### 5. Log In via the Access Portal
-
-- Visit your organization’s access portal URL (shown in the console)
-- Log in as the `admin` user using the emailed credentials
-- You should see a tile for the account and role you’ve been assigned
+This defines what the user can do after logging in.
 
 ---
 
-## After This
+### 4. Assign Access to the Account
 
-Once you can log in using IAM Identity Center, you’re ready to create additional accounts, roles, and permission sets.
+- Go to **AWS Accounts** → select your account
+- Click **Assign users or groups**
+- Select the new `admin` user
+- Select the `AdministratorAccess` permission set
 
-Continue with the next guide:
-
-👉 [Organization Structure](../org-structure/README.md)
+✅ Your user now has admin access to the account via the AWS access portal.
 
 ---
 
-📚 View all setup guides in the [AWS Deployment Guide](../README.md)
+### 5. Log in via the Access Portal
+
+- Go to the **Access Portal URL** (shown in the Identity Center dashboard)
+  - It looks like: `https://d-abc123.awsapps.com/start`
+- Log in with the admin user's email and password
+- Choose the account and permission set you want to access
+
+From now on, you can use this portal to manage infrastructure securely — without using the root user.
+
+---
+
+## Next Steps
+
+Continue the bootstrap process by:
+
+- [Enabling AWS Organizations](../org-structure/README.md) — Set up organizational units and member accounts
+- [Applying the Security Baseline](../security-baseline/README.md) — Enable CloudTrail, GuardDuty, and more
+- [Defining Tagging and Cost Tracking](../tagging-policy/README.md) and [Cost Management](../cost-management/README.md)
+
+---
+
+📚 Return to the [AWS Deployment Guide](../README.md)
