@@ -6,6 +6,16 @@ These steps are designed to work even in a multi-account organization, ensuring 
 
 ---
 
+## ⚠️ Cost Awareness
+
+All of the services in this guide are free to enable, but a few actions may generate cost:
+
+- **Budgets**: Creating multiple budgets per account may incur charges beyond the first (which is free).
+
+➡️ Set a budget early and use lightweight resources when testing.
+
+---
+
 ## Overview
 
 Good cost management practices help you:
@@ -37,6 +47,8 @@ This provides visual breakdowns of costs over time.
 - Attach an email address to receive alerts
 
 Budgets can be scoped to individual services, accounts, or tag values.
+
+⚠️ **Note**: The first budget per account is free. Additional budgets may incur a small charge.
 
 ---
 
@@ -98,10 +110,10 @@ You can now trace AWS costs by:
 
 If you're following the [AWS Bootstrap Checklist](../getting-started/bootstrap-checklist.md), continue with:
 
-- [Identity Center Setup](../identity-center/README.md) — Set up centralized user management, permission sets, and portal-based login
-- [Organization Structure](../org-structure/README.md) — Create organizational units, link member accounts, and apply governance controls
-- [Security Baseline](../security-baseline/README.md) — Enable CloudTrail, AWS Config, GuardDuty, and related tools
-- [Tagging Policy](../tagging-policy/README.md) — Define required tag keys and usage rules
+- [Identity Center Setup](../identity-center/README.md)
+- [Organization Structure](../org-structure/README.md)
+- [Security Baseline](../security-baseline/README.md)
+- [Tagging Policy](../tagging-policy/README.md)
 
 ---
 
