@@ -6,6 +6,19 @@ These services are foundational for visibility, compliance, and incident respons
 
 ---
 
+## ⚠️ Cost Awareness
+
+All of the services recommended on this page **potentially incur cost**, though some may be reasonable under the Free Tier or offer free trials.
+
+- CloudTrail: Free for management events, but S3 storage can cost
+- AWS Config: Charged per configuration item recorded
+- GuardDuty: Free for 30 days, then per-GB/event
+- Security Hub: Free for 30 days, then per rule/finding
+
+We recommend enabling these even in development accounts, but monitoring usage and billing early on.
+
+---
+
 ## Why This Matters
 
 Enabling these baseline services allows you to:
@@ -23,6 +36,11 @@ Enabling these baseline services allows you to:
 
 CloudTrail records API activity and resource changes in your AWS account.
 
+- ✅ **Cost Note**: One multi-region trail for management events is free for 90 days.  
+  Logs stored in S3 may incur storage charges depending on size and retention.
+
+**To enable:**
+
 - Go to **CloudTrail** in the AWS Console
 - Choose **"Create trail"**
 - Enable a **multi-region trail**
@@ -35,14 +53,17 @@ CloudTrail records API activity and resource changes in your AWS account.
 
 AWS Config records the configuration history and compliance state of your AWS resources.
 
+- ⚠️ **Cost Note**: Charged per configuration item recorded, which can grow quickly in large environments.  
+  Free Tier covers 7 configuration items per region.
+
+**To enable:**
+
 - Go to **AWS Config**
 - Set up a **recording group** (record all resources, all regions)
 - Choose an S3 bucket to store snapshots
 - (Optional) Set up rules to detect noncompliant resources
 
-This helps with drift detection, audit trails, and enforcing tagging or encryption requirements.
-
-➡️ See examples below.
+➡️ See below for example rules.
 
 ---
 
@@ -50,24 +71,27 @@ This helps with drift detection, audit trails, and enforcing tagging or encrypti
 
 Amazon GuardDuty is a threat detection service that monitors for malicious activity and unauthorized behavior.
 
+- ⚠️ **Cost Note**: Free for 30 days, then charged based on analyzed data volume (CloudTrail, VPC Flow Logs, DNS logs).
+
+**To enable:**
+
 - Go to **GuardDuty**
 - Click **"Enable GuardDuty"**
 - Leave all default settings enabled
-
-GuardDuty continuously analyzes CloudTrail, VPC Flow Logs, and DNS logs.
 
 ---
 
 ### 4. (Optional) Enable Security Hub
 
-Security Hub provides a centralized view of your security posture by aggregating findings from:
+Security Hub provides a centralized view of your security posture by aggregating findings from GuardDuty, AWS Config, and other services.
 
-- GuardDuty
-- AWS Config
-- IAM Access Analyzer
-- Other third-party tools
+- ⚠️ **Cost Note**: Free for 30 days, then charges based on active security standards and findings.
 
-You can enable it from the **Security Hub** console and choose which services to integrate.
+**To enable:**
+
+- Go to **Security Hub**
+- Click **"Enable Security Hub"**
+- Choose which standards and integrations to enable (e.g., CIS, AWS Foundational)
 
 ---
 
@@ -91,7 +115,7 @@ This built-in rule checks whether required tags (e.g., `Project`, `Environment`)
 }
 ```
 
-This rule helps enforce your [Tagging Policy](../tagging-policy/README.md).
+➡️ Supports your [Tagging Policy](../tagging-policy/README.md)
 
 ---
 
@@ -99,9 +123,7 @@ This rule helps enforce your [Tagging Policy](../tagging-policy/README.md).
 
 Ensure all S3 buckets have default encryption enabled:
 
-- Use managed rule ID: `S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED`
-
-This can help enforce compliance with security standards like SOC2, HIPAA, or internal policies.
+- Rule ID: `S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED`
 
 ---
 
@@ -110,7 +132,6 @@ This can help enforce compliance with security standards like SOC2, HIPAA, or in
 Require strong password policies in IAM:
 
 - Rule ID: `IAM_PASSWORD_POLICY`
-- Detects weak or missing account password settings
 
 ---
 
@@ -118,9 +139,9 @@ Require strong password policies in IAM:
 
 If you're working within an AWS Organization:
 
+- Ensure **CloudTrail logs** are stored in a centralized logging bucket (with versioning and access logging enabled)
 - Enable these services in the **management account** first
 - Use **AWS Config Aggregators** or **GuardDuty Organizations** to collect findings across accounts
-- Ensure **CloudTrail logs** are stored in a centralized logging bucket (with versioning and access logging enabled)
 
 ---
 
@@ -129,8 +150,7 @@ If you're working within an AWS Organization:
 Once security monitoring is enabled:
 
 - [Review the Tagging Policy](../tagging-policy/README.md) — Enforce required tags using AWS Config rules
-- [Ensure Identity Center is configured](../identity-center/README.md) — Avoid relying on IAM users for ongoing access
-- [Begin deploying infrastructure](../quickstarts/serverless-site.md) — Start applying these practices in real-world projects
+- [Track costs and activate cost allocation tags](../cost-management/README.md) — Ensure you can attribute spend across environments
 
 ---
 
