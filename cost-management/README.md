@@ -27,6 +27,8 @@ Good cost management practices help you:
 
 This provides visual breakdowns of costs over time.
 
+---
+
 ### 2. Set a Monthly Budget
 
 - In the Billing Console, go to **Budgets**
@@ -36,15 +38,35 @@ This provides visual breakdowns of costs over time.
 
 Budgets can be scoped to individual services, accounts, or tag values.
 
-### 3. Enable the `CostAllocationTags` Setting
+---
+
+### 3. Activate Cost Allocation Tags
 
 - Go to **Billing > Cost Allocation Tags**
-- Activate any relevant tags (e.g., `Project`, `Environment`, `Owner`)
-- Only activated tags will appear in billing reports
+
+When you first visit this page in a new AWS account, both **User-defined tags** and **AWS-generated tags** may appear empty.  
+That’s expected — AWS only shows tag keys that have already been used on a deployed resource.
+
+**To trigger tags to appear:**
+
+1. Deploy a resource (e.g., VPC, S3) with tags like `Project`, `Environment`, or `Owner`
+2. Wait 24–48 hours for AWS to detect them
+3. Return to **Cost Allocation Tags**
+4. Select the tag keys that now appear and click **"Activate"**
+
+Only activated tags will be available in:
+
+- Cost Explorer
+- Budgets
+- Usage reports and CSV exports
+
+➡️ See the [Tagging Policy Guide](../tagging-policy/README.md) for recommended tags and naming conventions.
+
+---
 
 ### 4. Apply Standard Tags
 
-Make sure your infrastructure (via Terraform) and any manual resources use consistent tags.
+Make sure your infrastructure (via Terraform) and any manually created resources use consistent, approved tags.
 
 Recommended tags:
 
@@ -58,6 +80,8 @@ tags = {
 
 These tags allow you to filter costs and usage by team, project, or deployment.
 
+➡️ Review the full [Tagging Policy](../tagging-policy/README.md) for guidelines on required tags, reserved names, and governance practices.
+
 ---
 
 ## After This
@@ -68,10 +92,16 @@ You can now trace AWS costs by:
 - Project
 - Owner or team
 
-Next:
+---
 
-- [Define your tagging policy](../tagging-policy/README.md)
-- [Ensure security and audit logging are in place](../security-baseline/README.md)
+## Next Steps
+
+If you're following the [AWS Bootstrap Checklist](../getting-started/bootstrap-checklist.md), continue with:
+
+- [Identity Center Setup](../identity-center/README.md) — Set up centralized user management, permission sets, and portal-based login
+- [Organization Structure](../org-structure/README.md) — Create organizational units, link member accounts, and apply governance controls
+- [Security Baseline](../security-baseline/README.md) — Enable CloudTrail, AWS Config, GuardDuty, and related tools
+- [Tagging Policy](../tagging-policy/README.md) — Define required tag keys and usage rules
 
 ---
 

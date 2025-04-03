@@ -1,76 +1,79 @@
 # Tagging Policy
 
-This guide defines how to use consistent tagging across AWS resources to enable cost allocation, security visibility, and team accountability.
+A consistent tagging strategy makes it easy to track costs, organize infrastructure, and manage security policies across AWS accounts.
 
-Tagging is critical for managing large-scale environments — and becomes even more powerful when enforced through infrastructure and policies.
+This guide defines the required and recommended tags for all AWS resources deployed through this framework.
 
 ---
 
-## Overview
+## Why Tags Matter
 
-Standardized tags help you:
+Tags allow you to:
 
-- Attribute AWS costs by project, environment, or team
-- Search and filter resources in the console
-- Identify ownership for operational issues
-- Enforce compliance through automation
+- Track costs by project, environment, or owner
+- Organize resources across accounts and regions
+- Enforce policies or generate reports
+- Enable automated cleanup, backup, or monitoring tools
+
+---
+
+## Required Tags
+
+All Terraform modules and manually created resources should use the following standard tags:
+
+| Tag Key     | Description                         | Example        |
+|-------------|-------------------------------------|----------------|
+| `Project`   | Name of the system or microservice  | `auth-service` |
+| `Environment` | Deployment stage or lifecycle      | `dev` / `prod` |
+| `Owner`     | Team or person responsible          | `jdoe`         |
+
+These tags must be consistently applied. Additional custom tags are allowed but must not conflict with reserved names.
 
 ---
 
 ## Recommended Tags
 
-Apply these tags consistently to **all AWS resources** — whether created manually or through Terraform:
+Depending on your setup, you may also include:
 
-| Tag Key      | Description                         | Example        |
-|--------------|-------------------------------------|----------------|
-| `Project`    | The name of the project or service  | `networking`   |
-| `Environment`| Deployment stage                    | `dev`, `prod`  |
-| `Owner`      | Person or team responsible          | `alice`        |
-| `CostCenter` | Billing code (if applicable)        | `1234-app-team`|
+- `BillingGroup` – For shared-cost reporting
+- `GitRepo` – Link to source code for traceability
+- `SupportLevel` – e.g., `critical`, `low`, `ops-only`
+- `DataClassification` – e.g., `public`, `internal`, `confidential`
 
 ---
 
-## Enforcing Tags in Terraform
+## Tag Activation for Cost Reporting
 
-Use the `tags` block in every resource, or define them in your module:
+Just adding tags to resources isn’t enough — AWS requires you to **explicitly activate tag keys** for cost and usage reporting.
 
-```hcl
-tags = {
-  Project     = "networking"
-  Environment = "dev"
-  Owner       = "alice"
-}
-```
+Here’s how it works:
 
-You can also use a shared tagging module or locals block to enforce consistency across modules.
+1. Deploy a resource (e.g., an S3 bucket or VPC) with tags like `Project`, `Environment`, or `Owner`
+2. Wait 24–48 hours for AWS to detect those tag keys
+3. Go to **Billing > Cost Allocation Tags** in the AWS Console
+4. Select the tags and click **“Activate”**
 
----
+Once activated, these tags will appear in:
 
-## Organizational Tag Policies (Optional)
+- **Cost Explorer**
+- **Budgets**
+- **CSV usage reports**
+- **Athena-based usage queries** (if enabled)
 
-If your organization has tagging enforcement enabled:
+If you skip this step, the tags won’t show up in any billing reports — even if your resources are correctly tagged.
 
-- Go to **AWS Organizations > Tag Policies**
-- Create a tag policy that defines required tags and allowed values
-- Attach it to the root or specific Organizational Units (OUs)
-
-This lets you block resources that don’t meet your tag standards.
+➡️ You can also refer to the [Cost Management Guide](../cost-management/README.md) for a step-by-step walkthrough.
 
 ---
 
-## After This
+## Tag Governance
 
-Once tagging is standardized:
+As your organization grows, consider using:
 
-- You can filter costs in Cost Explorer by tag
-- IAM policies can be scoped by tags
-- Resource cleanup and ownership tracking becomes easier
-
-Next:
-
-- [Review cost visibility setup](../cost-management/README.md)
-- [Deploy your first tagged infrastructure](../quickstarts/serverless-site.md)
+- **Tag Policies (via AWS Organizations)** – To enforce required keys and accepted values
+- **Resource Groups** – To group resources by tag
+- **Budgets and alerts scoped to tag values** – For per-project cost monitoring
 
 ---
 
-📚 View all setup guides in the [AWS Deployment Guide](../README.md)
+📚 Return to the [AWS Deployment Guide](../README.md)

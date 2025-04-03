@@ -10,13 +10,15 @@ These steps are typically performed once per management account.
 
 - [ ] Create a new AWS account (or use an existing one)
 - [ ] Enable MFA for the root user
-- [ ] Configure billing alerts (via [Cost Management](../cost-management/README.md))
-- [ ] Enable IAM Identity Center
+- [ ] Configure billing alerts
+
+See: [Cost Management](../cost-management/README.md)
 
 ---
 
 ## Identity Center
 
+- [ ] Enable IAM Identity Center
 - [ ] Create an admin user in IAM Identity Center
 - [ ] Create a permission set (e.g., `AdministratorAccess`)
 - [ ] Assign the user to the current account
