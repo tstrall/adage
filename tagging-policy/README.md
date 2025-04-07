@@ -78,7 +78,9 @@ As your organization grows, consider using:
 
 ## AWS Bootstrap Checklist Complete
 
-- Return to the [AWS Bootstrap Checklist](../bootstrap-checklist.md)
+If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md):
+
+- You have completed the AWS Bootstrap Checklist
 
 ---
 
