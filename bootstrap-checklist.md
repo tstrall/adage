@@ -12,7 +12,7 @@ These steps are typically performed once per management account.
 - [ ] Enable MFA for the root user
 - [ ] Configure billing alerts
 
-See: [Cost Management](../cost-management/README.md)
+See: [Cost Management](./cost-management/README.md)
 
 ---
 
@@ -24,7 +24,7 @@ See: [Cost Management](../cost-management/README.md)
 - [ ] Assign the user to the current account
 - [ ] Log in via the access portal to verify access
 
-See: [Identity Center Setup](../identity-center/README.md)
+See: [Identity Center Setup](./identity-center/README.md)
 
 ---
 
@@ -35,7 +35,7 @@ See: [Identity Center Setup](../identity-center/README.md)
 - [ ] Create member accounts under those OUs
 - [ ] In each account, create the `/aws-config/environment` parameter in Parameter Store
 
-See: [Organization Structure](../org-structure/README.md)
+See: [Organization Structure](./org-structure/README.md)
 
 ---
 
@@ -46,7 +46,7 @@ See: [Organization Structure](../org-structure/README.md)
 - [ ] Enable GuardDuty
 - [ ] (Optional) Set up Security Hub or SCPs
 
-See: [Security Baseline](../security-baseline/README.md)
+See: [Security Baseline](./security-baseline/README.md)
 
 ---
 
@@ -57,7 +57,7 @@ See: [Security Baseline](../security-baseline/README.md)
 - [ ] Set a budget with email alerts
 - [ ] Apply tags consistently in all Terraform modules
 
-See: [Tagging Policy](../tagging-policy/README.md) and [Cost Management](../cost-management/README.md)
+See: [Tagging Policy](./tagging-policy/README.md) and [Cost Management](./cost-management/README.md)
 
 ---
 
@@ -65,8 +65,8 @@ See: [Tagging Policy](../tagging-policy/README.md) and [Cost Management](../cost
 
 Once this checklist is complete, your account is ready to deploy infrastructure using the configuration-driven model.
 
-👉 [Next: Deploy a Serverless Static Website](../quickstarts/serverless-site.md)
+👉 [Next: Deploy a Serverless Static Website](./quickstarts/serverless-site.md)
 
 ---
 
-📚 View all setup guides in the [AWS Deployment Guide](../README.md)
+📚 View all setup guides in the [AWS Deployment Guide](./README.md)
