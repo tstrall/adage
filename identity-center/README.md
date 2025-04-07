@@ -75,7 +75,7 @@ From now on, you can use this portal to manage infrastructure securely — witho
 
 ## Next Steps
 
-Continue the bootstrap process by:
+If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), continue with:
 
 - [Enabling AWS Organizations](../org-structure/README.md) — Set up organizational units and member accounts
 - [Applying the Security Baseline](../security-baseline/README.md) — Enable CloudTrail, GuardDuty, and more

@@ -147,7 +147,7 @@ If you're working within an AWS Organization:
 
 ## Next Steps
 
-Once security monitoring is enabled:
+If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), continue with:
 
 - [Review the Tagging Policy](../tagging-policy/README.md) — Enforce required tags using AWS Config rules
 - [Track costs and activate cost allocation tags](../cost-management/README.md) — Ensure you can attribute spend across environments

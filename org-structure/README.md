@@ -117,11 +117,10 @@ All added accounts will be governed by the same environment binding as their OU.
 
 ## Next Steps
 
-Once your organization is set up, continue with:
+If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), continue with:
 
-- [Applying the Security Baseline](../security-baseline/README.md) — Enable CloudTrail, AWS Config, and GuardDuty
-- [Defining a Tagging Strategy](../tagging-policy/README.md) — Standardize cost attribution and access control
-- [Using org\_structure.py](../../scripts/bootstrap/org_structure.py) — Automate the creation of additional accounts and environment tagging
+- [Applying the Security Baseline](../security-baseline/README.md) — Enable CloudTrail, GuardDuty, and more
+- [Defining Tagging and Cost Tracking](../tagging-policy/README.md) and [Cost Management](../cost-management/README.md)
 
 ---
 

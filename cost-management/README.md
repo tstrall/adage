@@ -110,10 +110,10 @@ You can now trace AWS costs by:
 
 If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), continue with:
 
-- [Identity Center Setup](../identity-center/README.md)
-- [Organization Structure](../org-structure/README.md)
-- [Security Baseline](../security-baseline/README.md)
-- [Tagging Policy](../tagging-policy/README.md)
+- [Identity Center Setup](../identity-center/README.md) — Set up the admin account
+- [Enabling AWS Organizations](../org-structure/README.md) — Set up organizational units and member accounts
+- [Applying the Security Baseline](../security-baseline/README.md) — Enable CloudTrail, GuardDuty, and more
+- [Defining Tagging and Cost Tracking](../tagging-policy/README.md) and [Cost Management](../cost-management/README.md)
 
 ---
 
