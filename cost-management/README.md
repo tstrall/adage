@@ -108,7 +108,7 @@ You can now trace AWS costs by:
 
 ## Next Steps
 
-If you're following the [AWS Bootstrap Checklist](../getting-started/bootstrap-checklist.md), continue with:
+If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), continue with:
 
 - [Identity Center Setup](../identity-center/README.md)
 - [Organization Structure](../org-structure/README.md)

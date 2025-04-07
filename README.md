@@ -47,7 +47,7 @@ This repository (**aws-deployment-guide**) provides a guided tour and design rat
 
 ## 🛠️ First-Time Setup
 
-To prepare an AWS account for use with this framework, follow the [AWS Bootstrap Checklist](./getting-started/bootstrap-checklist.md). It walks through:
+To prepare an AWS account for use with this framework, follow the [AWS Bootstrap Checklist](./bootstrap-checklist.md). It walks through:
 
 - Security, identity, and billing setup
 - Enabling organizations and account structure

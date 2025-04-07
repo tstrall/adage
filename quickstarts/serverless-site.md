@@ -14,7 +14,7 @@ This guide walks you through deploying a fully serverless, secure static website
 
 If this is your first time working in AWS with this system, start here:
 
-👉 [AWS Bootstrap Checklist](../getting-started/bootstrap-checklist.md)
+👉 [AWS Bootstrap Checklist](../bootstrap-checklist.md)
 
 That guide walks you through creating a secure AWS account, enabling Identity Center, and setting up access. You’ll need that baseline in place before deploying infrastructure using this model.
 
