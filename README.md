@@ -33,7 +33,7 @@ This repository explains how to implement a **Configuration-Driven AWS Deploymen
 
 ---
 
-## 📂 How the Repositories Work Together
+## How the Repositories Work Together
 
 This model is composed of **three Git repositories** plus this documentation repo:
 
@@ -45,7 +45,7 @@ This repository (**aws-deployment-guide**) provides a guided tour and design rat
 
 ---
 
-## 🛠️ First-Time Setup
+## First-Time Setup
 
 To prepare an AWS account for use with this framework, follow the [AWS Bootstrap Checklist](./bootstrap-checklist.md). It walks through:
 
@@ -56,7 +56,31 @@ To prepare an AWS account for use with this framework, follow the [AWS Bootstrap
 
 ---
 
-## ⚡ Quickstart: Build Your Own Serverless Static Website
+## AWS CLI Profile Setup
+
+All framework scripts expect named AWS CLI profiles to target the correct account (e.g. `dev-iac`, `prod-core`). If you're using AWS SSO (recommended), run:
+
+```bash
+aws sso login --profile management
+export AWS_PROFILE=dev-iac  # or whichever profile you need
+```
+
+Alternatively, pass the profile inline:
+
+```bash
+AWS_PROFILE=dev-iac python scripts/deploy_config.py ...
+```
+
+For a streamlined experience, you can also:
+
+- Set up the [bash prompt to show your active AWS profile and Git branch](./setup/bash-aws-profile-prompt.md)
+- Review the full [AWS CLI profile quickstart](./setup/aws-cli-profiles.md)
+
+These setup steps apply to all repos in the deployment framework.
+
+---
+
+## Quickstart: Build Your Own Serverless Static Website
 
 Once your AWS account is bootstrapped and Identity Center is set up, follow this quickstart to deploy infrastructure for a serverless static site with CloudFront and S3:
 
@@ -64,7 +88,7 @@ Once your AWS account is bootstrapped and Identity Center is set up, follow this
 
 ---
 
-## 📖 Deployment Flow
+## Deployment Flow
 
 ### 1. Push Configuration to AWS Parameter Store
 
@@ -98,7 +122,7 @@ Lambdas resolve all dependencies dynamically using nicknames — no need to upda
 
 ---
 
-## 🔐 Security & Compliance
+## Security & Compliance
 
 - All changes must go through Git — providing version control and auditability
 - IAM permissions can restrict who can modify configuration vs. who can deploy
@@ -106,7 +130,7 @@ Lambdas resolve all dependencies dynamically using nicknames — no need to upda
 
 ---
 
-## 📌 Next Steps
+## Next Steps
 
 Want to implement this in your AWS environment?
 
@@ -124,4 +148,4 @@ Want to implement this in your AWS environment?
 
 ---
 
-📢 Like this approach? Star the repo, follow along, or use it as a base for your own architecture.
+Like this approach? Star the repo, follow along, or use it as a base for your own architecture.
