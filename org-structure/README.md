@@ -48,10 +48,10 @@ For each environment, create one AWS account for deploying infrastructure and co
 - `dev-iac`
 - `prod-iac`
 
-> ✅ For the simplest possible bootstrap, you can start with just:
->
-> - One OU: `prod`
-> - One account: `prod-iac`
+For the simplest possible bootstrap, you can start with just:
+
+- One OU: `prod`
+- One account: `prod-iac`
 
 You can name these accounts however you like, but consistent naming helps automation.
 
@@ -69,7 +69,16 @@ You can name these accounts however you like, but consistent naming helps automa
 
 ---
 
-### 4. Define the Environment Parameter for Each `*-iac` Account
+### Prerequisite: AWS CLI Profile
+
+Before running the setup scripts, make sure you have an AWS CLI named profile configured for the target account (e.g., `dev-iac` or `prod-iac`).
+
+If you're unfamiliar with profiles, refer to the official AWS guide:  
+https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html
+
+---
+
+### 4. Define the Environment Parameter for Each *-iac Account
 
 Each AWS account must declare its environment binding before any configuration or infrastructure can be deployed.
 
@@ -87,17 +96,16 @@ AWS_PROFILE=prod-iac python scripts/define_account_environment.py --env prod
 
 ---
 
-#### What This Does
+#### What It Does
 
-- Loads `account_environments/<env>.json` from the repo
+- Loads the file `account_environments/<env>.json` from the repo
 - Writes it to Systems Manager Parameter Store in the currently active AWS account
-- Uses the path: `/iac/environment`
 
-You can confirm success in the AWS Console:
+You can confirm success by checking in the AWS Console:
 
-> **AWS Systems Manager** → **Parameter Store** → Search for `/iac/environment`
+AWS Systems Manager → Parameter Store → Search for `/iac/environment`
 
-This parameter becomes the single source of truth for environment identification and configuration lookup during deployment.
+This parameter is used by all deployment scripts to resolve environment-specific configuration.
 
 ---
 
@@ -107,8 +115,8 @@ If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), co
 
 - [Applying the Security Baseline](../security-baseline/README.md)
 - [Defining Tagging and Cost Tracking](../tagging-policy/README.md)
-- [Setting Up Cost Management](../cost-management/README.md)
+- [Setting up Cost Management](../cost-management/README.md)
 
 ---
 
-📚 Return to the [AWS Deployment Guide](../README.md)
+Return to the [AWS Deployment Guide](../README.md)
