@@ -6,37 +6,12 @@ You’ll always know which AWS account you're working in, and avoid accidental d
 
 ---
 
-### 1. Save the Script
+### 1. Copy the Helper Script
 
-Create a file named `~/.aws_profile_prompt.sh` and paste the following contents:
+Copy the file named `.aws_profile_prompt.sh` to your home directory
 
 ```bash
-# ~/.aws_profile_prompt.sh
-
-# Show Git branch if in a repo
-parse_git_branch() {
-  git rev-parse --is-inside-work-tree &>/dev/null || return
-  git symbolic-ref --short HEAD 2>/dev/null | awk '{print " (" $0 ")"}'
-}
-
-# Build the prompt string
-build_prompt() {
-  local aws=""
-  [ -n "$AWS_PROFILE" ] && aws="[$AWS_PROFILE]"
-  local git_branch="$(parse_git_branch)"
-  PS1="${aws}\w${git_branch}> "
-}
-
-# Set terminal title and prompt
-update_prompt_and_title() {
-  build_prompt
-  local title=""
-  [ -n "$AWS_PROFILE" ] && title="[$AWS_PROFILE] "
-  title+="$(dirs +0)"  # keeps ~ intact
-  echo -ne "\033]0;${title}\007"
-}
-
-PROMPT_COMMAND="update_prompt_and_title"
+cp .aws_profile_prompt.sh ~
 ```
 
 ---
@@ -58,6 +33,23 @@ To apply the change without restarting your shell:
 
 ```bash
 source ~/.aws_profile_prompt.sh
+```
+
+---
+
+### 4. Log into AWS using the management profile
+```bash
+~> aws-login
+```
+
+---
+
+### 5. Set `AWS_PROFILE` environment variable
+
+```bash
+~> aws-profile dev-iac
+AWS_PROFILE set to dev-iac
+[dev-iac]~> 
 ```
 
 ---
