@@ -102,4 +102,4 @@ When a failure occurs (e.g., DB disconnect), the system checks Parameter Store a
 
 ---
 
-📚 View all setup guides in the [AWS Deployment Guide](../README.md)
+📚 View all setup guides at [Adage: AWS Deployment Framework](../README.md)

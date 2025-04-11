@@ -65,4 +65,4 @@ Next steps:
 
 ---
 
-📚 View all setup guides in the [AWS Deployment Guide](../README.md)
+📚 View all setup guides at [Adage: AWS Deployment Framework](../README.md)

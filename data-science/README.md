@@ -94,4 +94,4 @@ By externalizing state, separating intent from implementation, and making everyt
 
 ---
 
-📚 Return to the [AWS Deployment Guide](../README.md)
+Return to [Adage: AWS Deployment Framework](../README.md)

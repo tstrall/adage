@@ -117,4 +117,4 @@ If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), co
 
 ---
 
-📚 View all setup guides in the [AWS Deployment Guide](../README.md)
+📚 View all setup guides at [Adage: AWS Deployment Framework](../README.md)

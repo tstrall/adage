@@ -84,4 +84,4 @@ If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md):
 
 ---
 
-📚 Return to the [AWS Deployment Guide](../README.md)
+Return to [Adage: AWS Deployment Framework](../README.md)

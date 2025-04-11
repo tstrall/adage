@@ -1,6 +1,6 @@
 # AWS Organization Structure
 
-This guide explains how to set up your AWS Organization and prepare accounts for use with the deployment framework.
+This guide explains how to set up your AWS Organization and prepare accounts for use with the **Adage** deployment framework.
 
 ## Why Use AWS Organizations?
 
@@ -16,7 +16,7 @@ This is a foundational step toward production-grade infrastructure.
 
 ## Overview
 
-The deployment framework assumes your AWS accounts are created inside an AWS Organization and grouped into Organizational Units (OUs) based on environment (e.g., `dev`, `prod`).
+The **Adage** deployment framework assumes your AWS accounts are created inside an AWS Organization and grouped into Organizational Units (OUs) based on environment (e.g., `dev`, `prod`).
 
 Each OU represents a logical environment, and each account within the OU is expected to declare its environment binding — a configuration that determines which Git repository and branch it uses for config and infrastructure.
 
@@ -105,7 +105,7 @@ You can confirm success by checking in the AWS Console:
 
 AWS Systems Manager → Parameter Store → Search for `/iac/environment`
 
-This parameter is used by all deployment scripts to resolve environment-specific configuration.
+This parameter is used by all **Adage** deployment scripts to resolve environment-specific configuration.
 
 ---
 
@@ -119,4 +119,4 @@ If you're following the [AWS Bootstrap Checklist](../bootstrap-checklist.md), co
 
 ---
 
-Return to the [AWS Deployment Guide](../README.md)
+Return to [Adage: AWS Deployment Framework](../README.md)
