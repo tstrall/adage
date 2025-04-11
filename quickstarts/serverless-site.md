@@ -40,34 +40,43 @@ This Quickstart will eventually include the following components:
 
 ### 1. DNS Setup (Route 53)
 
-- Create or migrate a hosted zone for your domain  
-- Define DNS records (e.g., A, CNAME)
+- If you do not have a DNS domain to use, you can skip this step. Your site will have a AWS generated url.
+- Define DNS configuration, based on existing entry [strall-com](https://github.com/tstrall/aws-config/blob/main/iac/prod/route53-zone/strall-com/config.json)
 
-### 2. TLS Certificate (ACM)
+```
+cd aws-config/
+AWS_PROFILE=dev-iac ./scripts/deploy.sh route53-zone <nickname>
 
-- Request a public TLS certificate  
-- Validate domain ownership via Route 53
+cd aws-iac/
+AWS_PROFILE=dev-iac ./scripts/deploy.sh route53-zone <nickname>
+```
 
-### 3. S3 Website Bucket
+### 2. Push Configuration to AWS Parameter Store
 
-- Create a versioned S3 bucket  
-- Enforce static content access policies (no public upload, no directory listing)
+- See [aws-config](https://github.com/tstrall/aws-config/) Github repo
+- Define website configuration, based on existing entry [strall-com](https://github.com/tstrall/aws-config/blob/main/iac/prod/serverless-site/strall-com/config.json)
 
-### 4. CloudFront Distribution
+```
+cd aws-config/
+AWS_PROFILE=dev-iac ./scripts/deploy.sh serverless-site <nickname>
+```
 
-- Use CloudFront to serve the S3 content  
-- Enforce HTTPS  
-- Route traffic through your custom domain
+### 3. Deploy AWS Infrastructure Using Terraform
 
-### 5. IAM & Tagging
+- See [aws-iac](https://github.com/tstrall/aws-iac/) Github repo
+```
+cd aws-iac/
+AWS_PROFILE=dev-iac ./scripts/deploy.sh serverless-site <nickname>
+```
 
-- Apply standard tags (`Environment`, `Owner`, `CostCenter`, etc.)  
-- Grant access using least-privilege IAM roles for human or CI/CD use
+### 4. Deploy Static Website 
 
-### 6. (Optional) CI/CD Pipeline
+- See [strall.com](strall.com) Github repo for a static site example:
 
-- Automate upload of static assets to S3  
-- Auto-invalidate CloudFront after deployment
+```
+cd strall.com/
+AWS_PROFILE=dev-iac ./scripts/deploy.sh serverless-site <nickname>
+```
 
 ---
 
@@ -77,24 +86,24 @@ A corresponding config entry in `aws-config` might look like:
 
 ```json
 {
-  "nickname": "main-site",
-  "domain_name": "example.com",
-  "hosted_zone_id": "Z123456ABCDEFG",
-  "acm_certificate_arn": "arn:aws:acm:...",
-  "default_root_object": "index.html"
+  "site_name": "dev.strall.com",
+  "content_bucket_prefix": "strall-com-dev-site",
+  "cloudfront_comment": "Static site for strall.com (dev)",
+  "index_document": "index.html",
+  ...
 }
 ```
 
 This config is pushed to:
 
 ```
-/aws/serverless-site/main-site/config
+/aws/serverless-site/strall-com/config
 ```
 
 And Terraform will write runtime values (e.g., distribution ID, S3 URL) to:
 
 ```
-/aws/serverless-site/main-site/runtime
+/aws/serverless-site/strall-com/runtime
 ```
 
 ---
