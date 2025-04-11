@@ -1,8 +1,8 @@
-# AWS Deployment Guide
+# Adage: A Configuration-Driven AWS Deployment Framework
 
 ## Core Design Principles
 
-This project is guided by a fabric of interwoven ideas that enable scalable, secure, and flexible AWS infrastructure.
+This project is guided by a fabric of ideas that enable scalable, secure, and flexible AWS infrastructure.
 
 Each principle supports the others, forming a composable system where infrastructure, configuration, and services can evolve independently — yet always remain connected.
 
@@ -41,7 +41,7 @@ This model is composed of **three Git repositories** plus this documentation rep
 2. **[`aws-config`](https://github.com/tstrall/aws-config)** – Git-controlled JSON config, synced to Parameter Store
 3. **[`aws-lambda`](https://github.com/tstrall/aws-lambda)** – Lambda functions that resolve their dependencies dynamically
 
-This repository (**aws-deployment-guide**) provides a guided tour and design rationale for using them together.
+This repository (**Adage**) provides a guided tour and design rationale for using them together.
 
 ---
 
@@ -76,7 +76,7 @@ For a streamlined experience, you can also:
 - Set up the [bash prompt to show your active AWS profile and Git branch](./setup/bash-aws-profile-prompt.md)
 - Review the full [AWS CLI profile quickstart](./setup/aws-cli-profiles.md)
 
-These setup steps apply to all repos in the deployment framework.
+These setup steps apply to all repos in the **Adage** framework.
 
 ---
 
@@ -92,33 +92,35 @@ Once your AWS account is bootstrapped and Identity Center is set up, follow this
 
 ### 1. Push Configuration to AWS Parameter Store
 
-Configuration is defined in `aws-config` and synced to Parameter Store using a CI/CD pipeline or script. Each component receives its config under a path like:
+Configuration is defined in `aws-config` and synced to Parameter Store using a CI/CD pipeline or script.
 
 ```
-/aws/vpc/main/config
+cd aws-config/
+./scripts/deploy.sh <component> <nickname>
 ```
 
-This defines what will be deployed and how.
+Each component finds its config under a path like:
+
+```
+/iac/<component>/<nickname>/config
+```
+
+The contents of AWS Parameter Store defines what can be deployed in a given account.
 
 ### 2. Deploy Using Terraform
 
-In `aws-iac`, each module reads from Parameter Store and writes its runtime outputs back:
+In `aws-iac`, each component reads from AWS Parameter Store for configuration and writes its runtime outputs back to Parameter Store for other components to read:
 
 ```sh
-cd aws-iac/components/vpc
-terraform apply -var="nickname=main"
+cd aws-iac/
+./scripts/deploy.sh <component> <nickname>
 ```
 
-Terraform fetches the config for `main` from `/aws/vpc/main/config`, deploys it, and writes runtime info to `/aws/vpc/main/runtime`.
+Each component publishes its runtime info under a path like:
 
-### 3. Deploy Lambda Services Independently
-
-```sh
-cd aws-lambda/user-auth-service
-./deploy.sh
 ```
-
-Lambdas resolve all dependencies dynamically using nicknames — no need to update Terraform or hardcode references.
+/iac/<component>/<nickname>/runtime
+```
 
 ---
 
