@@ -1,36 +1,56 @@
 # Getting Started
 
-## First-Time Setup
-
-To prepare an AWS account for use with this framework, follow the 👉 [AWS Bootstrap Checklist](./bootstrap-checklist.md). It walks through:
-
-- Security, identity, and billing setup
-- Enabling organizations and account structure
-- Required services like CloudTrail, Config, and GuardDuty
-- Tagging and cost tracking policies
+Welcome to the Adage deployment framework. This guide walks you through the initial steps needed to prepare your AWS environment for configuration-driven deployments.
 
 ---
 
-## AWS CLI Profile Setup
+## Prerequisites
 
-All framework scripts expect named AWS CLI profiles to target the correct account (e.g. `dev-iac`, `prod-core`). If you're using AWS SSO (recommended), run:
+Before proceeding, make sure you have:
 
-```bash
+- An AWS account with admin access
+- [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) installed
+- [Terraform](https://developer.hashicorp.com/terraform/downloads) installed
+- `jq` installed for working with JSON on the command line
+- Python 3.9+ for running helper scripts
+
+---
+
+## AWS SSO and CLI Profile Setup
+
+You’ll need to configure named profiles in your AWS CLI for authentication.
+
+Follow the guide here:
+
+[AWS CLI Profile Setup →](./setup/aws-cli-profiles.md)
+
+Once set up, you can log in:
+
+```sh
 aws sso login --profile management
-export AWS_PROFILE=dev-iac  # or whichever profile you need
 ```
-
-Alternatively, pass the profile inline:
-
-```bash
-AWS_PROFILE=dev-iac python scripts/deploy_config.py ...
-```
-
-For a streamlined experience, you can also:
-
-- Set up the [bash prompt to show your active AWS profile and Git branch](./setup/bash-aws-profile-prompt.md)
-- Review the full [AWS CLI profile quickstart](./setup/aws-cli-profiles.md)
-
-These setup steps apply to all repos in the **Adage** framework.
 
 ---
+
+## First-Time Account Bootstrapping
+
+Next, set up your AWS Organization, create required accounts, and enable IAM Identity Center.
+
+Follow the steps in:
+
+[Account Bootstrapping →](./org-structure/README.md)
+
+---
+
+## When Things Go Wrong
+
+If something doesn’t work as expected, check the following troubleshooting guide:
+
+[Troubleshooting Common Issues →](./troubleshooting_common_issues.md)
+
+---
+
+Once these steps are complete, you can move on to deploying your first component using one of the Quickstarts.
+
+[Serverless Static Site Quickstart →](./quickstarts/serverless-site.md)
+
