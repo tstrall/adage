@@ -29,7 +29,7 @@ In this context, it means:
 Every component registers its runtime info to a predictable path like:
 
 ```
-/aws/<component>/<nickname>/runtime
+/iac/<component>/<nickname>/runtime
 ```
 
 This makes it easy to:

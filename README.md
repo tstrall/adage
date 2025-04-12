@@ -23,6 +23,14 @@ This repository (**Adage**) provides a guided tour and design rationale for usin
 
 ---
 
+## Getting Started
+
+If this is your first time working in AWS with this system, start here: 👉 [Getting Started](./GETTING_STARTED.md)
+
+That guide walks you through creating a secure AWS account, enabling Identity Center, and setting up access. You’ll need that baseline in place before deploying infrastructure using this model.
+
+---
+
 ## Quickstart: Build Your Own Serverless Static Website
 
 Once your AWS account is bootstrapped and Identity Center is set up, follow this quickstart to deploy infrastructure for a serverless static site with CloudFront and S3:
@@ -48,7 +56,7 @@ Each component finds its config under a path like:
 /iac/<component>/<nickname>/config
 ```
 
-![Alt text](./img/deploy-config.drawio.png)
+![Push Configuration to AWS Parameter Store](./img/deploy-config.drawio.png)
 
 The contents of AWS Parameter Store defines what can be deployed in a given account.
 
@@ -67,7 +75,7 @@ Each component publishes its runtime info under a path like:
 /iac/<component>/<nickname>/runtime
 ```
 
-![Alt text](./img/deploy-tf.drawio.png)
+![Deploy Using Terraform](./img/deploy-tf.drawio.png)
 
 ➡️ [See AWS Deployment Strategies »](deployment/README.md)
 
