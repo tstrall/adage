@@ -1,27 +1,5 @@
 # Adage: A Configuration-Driven AWS Deployment Framework
 
-## Core Design Principles
-
-This project is guided by a fabric of ideas that enable scalable, secure, and flexible AWS infrastructure.
-
-Each principle supports the others, forming a composable system where infrastructure, configuration, and services can evolve independently — yet always remain connected.
-
-These principles include:
-
-- **Build Once, Deploy Anywhere** – Reusable Terraform components across all environments.
-- **Configuration Is the Source of Truth** – Git-controlled configs drive every deployment.
-- **Immutable Infrastructure** – Replace rather than patch, enabling reliable rollouts.
-- **Dynamic Dependency Resolution** – Services discover dependencies at runtime via nicknames.
-- **Separation of Concerns** – Infra, config, and app code live in independent repos.
-- **External System Referencing** – Reference systems you didn’t create as first-class citizens.
-- **Git as the Gatekeeper** – Only what’s defined in Git gets deployed.
-- **Optional Smart Caching** – Runtime refresh logic when failures occur.
-- **LocalStack-Friendly by Default** – Develop and test locally with minimal cost.
-
-➡️ [View the full explanation »](design-principles/README.md)
-
----
-
 ## Overview
 
 This repository explains how to implement a **Configuration-Driven AWS Deployment Model**, allowing you to:
@@ -42,41 +20,6 @@ This model is composed of **three Git repositories** plus this documentation rep
 3. **[`aws-lambda`](https://github.com/tstrall/aws-lambda)** – Lambda functions that resolve their dependencies dynamically
 
 This repository (**Adage**) provides a guided tour and design rationale for using them together.
-
----
-
-## First-Time Setup
-
-To prepare an AWS account for use with this framework, follow the [AWS Bootstrap Checklist](./bootstrap-checklist.md). It walks through:
-
-- Security, identity, and billing setup
-- Enabling organizations and account structure
-- Required services like CloudTrail, Config, and GuardDuty
-- Tagging and cost tracking policies
-
----
-
-## AWS CLI Profile Setup
-
-All framework scripts expect named AWS CLI profiles to target the correct account (e.g. `dev-iac`, `prod-core`). If you're using AWS SSO (recommended), run:
-
-```bash
-aws sso login --profile management
-export AWS_PROFILE=dev-iac  # or whichever profile you need
-```
-
-Alternatively, pass the profile inline:
-
-```bash
-AWS_PROFILE=dev-iac python scripts/deploy_config.py ...
-```
-
-For a streamlined experience, you can also:
-
-- Set up the [bash prompt to show your active AWS profile and Git branch](./setup/bash-aws-profile-prompt.md)
-- Review the full [AWS CLI profile quickstart](./setup/aws-cli-profiles.md)
-
-These setup steps apply to all repos in the **Adage** framework.
 
 ---
 
@@ -105,6 +48,8 @@ Each component finds its config under a path like:
 /iac/<component>/<nickname>/config
 ```
 
+![Alt text](./img/deploy-config.drawio.png)
+
 The contents of AWS Parameter Store defines what can be deployed in a given account.
 
 ### 2. Deploy Using Terraform
@@ -121,6 +66,32 @@ Each component publishes its runtime info under a path like:
 ```
 /iac/<component>/<nickname>/runtime
 ```
+
+![Alt text](./img/deploy-tf.drawio.png)
+
+➡️ [See AWS Deployment Strategies »](deployment/README.md)
+
+---
+
+## Core Design Principles
+
+This project is guided by a fabric of ideas that enable scalable, secure, and flexible AWS infrastructure.
+
+Each principle supports the others, forming a composable system where infrastructure, configuration, and services can evolve independently — yet always remain connected.
+
+These principles include:
+
+- **Build Once, Deploy Anywhere** – Reusable Terraform components across all environments.
+- **Configuration Is the Source of Truth** – Git-controlled configs drive every deployment.
+- **Immutable Infrastructure** – Replace rather than patch, enabling reliable rollouts.
+- **Dynamic Dependency Resolution** – Services discover dependencies at runtime via nicknames.
+- **Separation of Concerns** – Infra, config, and app code live in independent repos.
+- **External System Referencing** – Reference systems you didn’t create as first-class citizens.
+- **Git as the Gatekeeper** – Only what’s defined in Git gets deployed.
+- **Optional Smart Caching** – Runtime refresh logic when failures occur.
+- **LocalStack-Friendly by Default** – Develop and test locally with minimal cost.
+
+➡️ [View the full explanation »](design-principles/README.md)
 
 ---
 
