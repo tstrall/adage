@@ -1,5 +1,7 @@
 # Adage: A Configuration-Driven AWS Deployment Framework
 
+> **New here?** Start with the [Getting Started guide](./GETTING_STARTED.md) and the [Serverless Site Quickstart](./quickstarts/serverless-site.md).
+
 ## Overview
 
 This repository explains how to implement a **Configuration-Driven AWS Deployment Model**, allowing you to:

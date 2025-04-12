@@ -1,5 +1,18 @@
 # Troubleshooting Common Issues
 
+## Table of Contents
+
+- [AWS SSO or Profile Not Set Up](#aws-sso-or-profile-not-set-up)
+- [Missing Tools or Dependencies](#missing-tools-or-dependencies)
+- [Parameter Store Path Not Found](#parameter-store-path-not-found)
+- ["site_name" Misunderstood](#site_name-misunderstood)
+- [CloudFront Output Missing or Wrong](#cloudfront-output-missing-or-wrong)
+- [Route 53 Not Working](#route-53-not-working)
+- [Conflicting DNS Records (CNAME from ImprovMX)](#conflicting-dns-records-cname-from-improvmx)
+- [Email Forwarding Problems](#email-forwarding-problems)
+- [Destroy Command Didn’t Remove Everything](#destroy-command-didnt-remove-everything)
+
+
 This guide outlines common problems you might encounter when deploying a serverless static site using the Adage framework, and how to fix them.
 
 ---
@@ -91,6 +104,24 @@ aws ssm get-parameter \
 - Use the `route53-zone` component to manage DNS.
 - See: [Route53-Zone Component](https://github.com/tstrall/aws-iac/tree/main/components/route53-zone)
   - Includes GoDaddy delegation example.
+
+---
+
+## Conflicting DNS Records (CNAME from ImprovMX)
+
+**Symptom:** Route 53 fails to create a DNS record (e.g. `A` or `MX`) due to a conflicting `CNAME`.
+
+**Fix:**
+- If you signed up for [ImprovMX](https://improvmx.com/) and selected a default domain redirect (e.g. from `@` or `www`), it may have automatically added a `CNAME` record in Route 53.
+- Visit **Route 53 → Hosted Zones → your domain** and manually delete any CNAME records you didn’t create (especially for `@` or `www`).
+- Then re-run the `route53-zone` deployment:
+
+```sh
+cd aws-iac/
+AWS_PROFILE=dev-iac ./scripts/deploy.sh route53-zone <nickname>
+```
+
+**Tip:** The Adage `route53-zone` config defines only the records you explicitly include — it won’t clean up third-party records.
 
 ---
 

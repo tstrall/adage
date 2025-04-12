@@ -32,6 +32,14 @@ If you haven’t configured your AWS CLI profiles yet, follow the [AWS CLI Profi
 
 ---
 
+## Validate Before You Continue
+
+Before proceeding to deployment, it's a good idea to confirm your CLI access, profiles, and local tools are set up correctly:
+
+➡️ [Validate Your Setup](../validate_setup.md)
+
+---
+
 ## Deployment Overview
 
 This is a two-step deployment process:
@@ -44,7 +52,9 @@ This is a two-step deployment process:
 
 All infrastructure is driven by config. Nothing gets deployed unless it’s defined in Parameter Store.
 
-➡️ [See AWS Deployment Strategies »](../deployment/README.md)
+### See Also
+
+- [AWS Deployment Strategies →](../deployment/README.md)
 
 ---
 
@@ -70,7 +80,7 @@ This Quickstart includes the following components:
 
     Note: `"site_name"` should always be the actual domain name, even if you're not using a custom domain. This value is used internally for S3 bucket naming and CloudFront aliases.
 
-**Otherwise**, deploy the [`route53-zone`](https://github.com/tstrall/aws-iac/tree/main/components/route53-zone) component to configure AWS Route 53 as your domain’s DNS name server. That page also includes instructions for delegating DNS from GoDaddy.
+- **Otherwise**, deploy the [`route53-zone`](https://github.com/tstrall/aws-iac/tree/main/components/route53-zone) component to configure AWS Route 53 as your domain’s DNS name server. That page also includes instructions for delegating DNS from GoDaddy.
   - Use the existing [`strall-com` config](https://github.com/tstrall/aws-config/blob/main/iac/prod/route53-zone/strall-com/config.json) as a reference.
   - That example includes an `MX` record for forwarding email through [ImprovMX](https://improvmx.com/).
     - **Remove the `MX` record** if you don’t want email forwarding.
