@@ -1,6 +1,6 @@
 # Serverless Static Website Quickstart
 
-![Push Configuration to AWS Parameter Store](../img/serverless-site.drawio.png)
+![Serverless Static Website](../img/serverless-site.drawio.png)
 
 This guide walks you through deploying a fully serverless, secure static website using:
 
