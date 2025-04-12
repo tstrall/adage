@@ -44,31 +44,38 @@ This Quickstart will eventually include the following components:
 
 ### 1. DNS Setup (Route 53)
 
-- If you do not have a DNS domain to use, you can skip this step.
-  - Your site will have a AWS generated HTTPS url.
-  - Make sure to `"enable_custom_domain": false` in `aws-iac/<ENV>/serverless-site/<NICKNAME>`
+- **If your domain is already using AWS Route 53 as its name server**, you can skip this step.
 
-```
-{
-  "site_name": "www.mysite.com",
-  "enable_custom_domain": false,
-  ...
-}
-```
+- **If you do not have a DNS domain**, you can also skip this step.
+  - Your site will still be accessible via an AWS-generated HTTPS URL.
+  - Be sure to set `"enable_custom_domain": false` in your config at `aws-config/<ENV>/serverless-site/<NICKNAME>`:
 
-- Define DNS configuration, based on existing entry [strall-com](https://github.com/tstrall/aws-config/blob/main/iac/prod/route53-zone/strall-com/config.json)
+    ```json
+    {
+      "site_name": "www.mysite.com",
+      "enable_custom_domain": false,
+      ...
+    }
+    ```
 
-```
+- **Otherwise**, deploy the [`route53-zone`](https://github.com/tstrall/aws-iac/tree/main/components/route53-zone) component to configure AWS Route 53 as your domain’s DNS name server.
+  - Use the existing [`strall-com` config](https://github.com/tstrall/aws-config/blob/main/iac/prod/route53-zone/strall-com/config.json) as a reference.
+  - That example includes an `MX` record for forwarding email through [ImprovMX](https://improvmx.com/).
+    - **Remove the `MX` record** if you don’t want email forwarding.
+    - **Otherwise,** create a free account on [ImprovMX](https://improvmx.com/) to enable email forwarding for your domain.
+
+
+To deploy:
+
+```sh
 cd aws-config/
 AWS_PROFILE=dev-iac ./scripts/deploy.sh route53-zone <nickname>
 ```
 
-```
+```sh
 cd aws-iac/
 AWS_PROFILE=dev-iac ./scripts/deploy.sh route53-zone <nickname>
 ```
-
-- Create an account on [ImprovMX](https://improvmx.com/) for free email forwarding for your domain.
 
 ### 2. Deploy AWS Infrastructure
 
