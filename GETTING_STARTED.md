@@ -43,7 +43,7 @@ aws sso login --profile management
 ```
 
 > **Note:** If you're starting from a brand-new AWS account and haven't yet enabled IAM Identity Center, you’ll need to do that in the AWS Console first.  
-> See [Account Bootstrapping →](./org-structure/README.md) for instructions on enabling SSO and creating your first admin user.
+> See [Account Bootstrapping →](./bootstrap-checklist.md) for instructions on enabling SSO and creating your first admin user.
 
 ---
 
@@ -53,7 +53,7 @@ Next, set up your AWS Organization, create required accounts, and enable IAM Ide
 
 Follow the steps in:
 
-[Account Bootstrapping →](./org-structure/README.md)
+[Account Bootstrapping →](./bootstrap-checklist.md)
 
 ---
 
