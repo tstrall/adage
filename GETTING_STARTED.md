@@ -1,6 +1,6 @@
 # Getting Started
 
-**New here?** Start with this guide and the [Serverless Site Quickstart](./quickstarts/serverless-site.md).
+**New here?** Start with _**this Getting Started guide**_ first, then continue with the [Serverless Site Quickstart](./quickstarts/serverless-site.md).
 
 Welcome to the Adage deployment framework. This guide walks you through the initial steps needed to prepare your AWS environment for configuration-driven deployments.
 
@@ -45,6 +45,10 @@ aws sso login --profile management
 > **Note:** If you're starting from a brand-new AWS account and haven't yet enabled IAM Identity Center, you’ll need to do that in the AWS Console first.  
 > See [Account Bootstrapping →](./bootstrap-checklist.md) for instructions on enabling SSO and creating your first admin user.
 
+For a deeper explanation of how and why Adage uses this login pattern, see:
+
+[Understanding the AWS Login Strategy →](./org-structure/aws-login-strategy.md)
+
 ---
 
 ## First-Time Account Bootstrapping
@@ -74,3 +78,4 @@ Once these steps are complete, you should validate your setup:
 Then you can deploy your first component:
 
 [Serverless Static Site Quickstart →](./quickstarts/serverless-site.md)
+
