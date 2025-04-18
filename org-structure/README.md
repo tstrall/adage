@@ -76,40 +76,8 @@ Before running the setup scripts, make sure you have an AWS CLI named profile co
 If you're unfamiliar with profiles, refer to the official AWS guide:  
 https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html
 
-> Before running any scripts, make sure the profile has permission to assume `OrganizationAccountAccessRole`. See the next section for trust policy setup.
 
----
-
-### Allow SSO Admin to Access New Accounts
-
-New AWS accounts created via AWS Organizations include a role named `OrganizationAccountAccessRole`.  
-By default, this role can only be assumed by the root management account — not by IAM Identity Center users.
-
-To allow your Identity Center admin (e.g., `admin@usekarma.dev`) to access new accounts:
-
-1. Log into each **new account as root**
-2. Go to **IAM → Roles → OrganizationAccountAccessRole**
-3. Click **“Trust relationships” → “Edit trust policy”**
-4. Replace the policy with:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::<management-account-id>:role/aws-reserved/sso.amazonaws.com/<permission-set-id>"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-```
-
-> Tip: You can find the correct role ARN by logging into the management account and going to **IAM → Roles**, then copying the ARN of the role associated with your Identity Center admin's permission set (e.g., `AdministratorAccess`).
-
-Once set, your `AWS_PROFILE=dev-iac` (or `prod-iac`, etc.) will work normally using the standard CLI and Terraform workflows.
+> Ensure your CLI profiles are correctly configured before running any bootstrap scripts.
 
 ---
 
