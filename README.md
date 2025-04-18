@@ -1,5 +1,7 @@
 # Adage: A Configuration-Driven AWS Deployment Framework
 
+![Adage: A Configuration-Driven AWS Deployment Framework](./img/adage-system-diagram.png)
+
 > **New here?** Start with the [Getting Started guide](./GETTING_STARTED.md) and the [Serverless Site Quickstart](./quickstarts/serverless-site.md).
 >
 > 💬 Have a question or feedback? [Start a discussion](https://github.com/tstrall/adage/discussions).
