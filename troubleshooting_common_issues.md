@@ -102,7 +102,7 @@ aws ssm get-parameter \
 **Fix:**
 - Confirm your domain is delegated to AWS Route 53.
 - Use the `route53-zone` component to manage DNS.
-- See: [Route53-Zone Component](https://github.com/tstrall/aws-iac/tree/main/components/route53-zone)
+- See: [Route53-Zone Component](https://github.com/usekarma/aws-iac/tree/main/components/route53-zone)
   - Includes GoDaddy delegation example.
 
 ---
@@ -146,5 +146,5 @@ AWS_PROFILE=dev-iac ./scripts/deploy.sh route53-zone <nickname>
 
 ---
 
-Still stuck? [Open an issue](https://github.com/tstrall/adage/issues) or review the full [Quickstart Guide](./serverless-site.md).
+Still stuck? [Open an issue](https://github.com/usekarma/adage/issues) or review the full [Quickstart Guide](./serverless-site.md).
 

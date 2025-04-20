@@ -4,7 +4,7 @@
 
 > **New here?** Start with the [Getting Started guide](./GETTING_STARTED.md) and the [Serverless Site Quickstart](./quickstarts/serverless-site.md).
 >
-> 💬 Have a question or feedback? [Start a discussion](https://github.com/tstrall/adage/discussions).
+> 💬 Have a question or feedback? [Start a discussion](https://github.com/usekarma/adage/discussions).
 
 ## Overview
 
@@ -21,9 +21,9 @@ This repository explains how to implement a **Configuration-Driven AWS Deploymen
 
 This model is composed of **three Git repositories** plus this documentation repo:
 
-1. **[`aws-iac`](https://github.com/tstrall/aws-iac)** – Terraform modules for reusable AWS infrastructure
-2. **[`aws-config`](https://github.com/tstrall/aws-config)** – Git-controlled JSON config, synced to Parameter Store
-3. **[`aws-lambda`](https://github.com/tstrall/aws-lambda)** – Lambda functions that resolve their dependencies dynamically
+1. **[`aws-iac`](https://github.com/usekarma/aws-iac)** – Terraform modules for reusable AWS infrastructure
+2. **[`aws-config`](https://github.com/usekarma/aws-config)** – Git-controlled JSON config, synced to Parameter Store
+3. **[`aws-lambda`](https://github.com/usekarma/aws-lambda)** – Lambda functions that resolve their dependencies dynamically
 
 This repository (**Adage**) provides a guided tour and design rationale for using them together.
 

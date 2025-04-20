@@ -17,10 +17,10 @@
 This is a two-step deployment process:
 
 1. **Push configuration to AWS Parameter Store**  
-   Define your static site using the [`aws-config`](https://github.com/tstrall/aws-config) repository, and push the config to Parameter Store.
+   Define your static site using the [`aws-config`](https://github.com/usekarma/aws-config) repository, and push the config to Parameter Store.
 
 2. **Deploy infrastructure with Terraform**  
-   Run Terraform from the [`aws-iac`](https://github.com/tstrall/aws-iac) repo. It reads the configuration from Parameter Store and builds the required AWS infrastructure.
+   Run Terraform from the [`aws-iac`](https://github.com/usekarma/aws-iac) repo. It reads the configuration from Parameter Store and builds the required AWS infrastructure.
 
 All infrastructure is driven by config. Nothing gets deployed unless it’s defined in Parameter Store.
 

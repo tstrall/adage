@@ -45,10 +45,10 @@ Before proceeding to deployment, it's a good idea to confirm your CLI access, pr
 This is a two-step deployment process:
 
 1. **Push configuration to AWS Parameter Store**  
-   Define your static site using the [`aws-config`](https://github.com/tstrall/aws-config) repository, and push the config to Parameter Store.
+   Define your static site using the [`aws-config`](https://github.com/usekarma/aws-config) repository, and push the config to Parameter Store.
 
 2. **Deploy infrastructure with Terraform**  
-   Run Terraform from the [`aws-iac`](https://github.com/tstrall/aws-iac) repo. It reads the configuration from Parameter Store and builds the required AWS infrastructure.
+   Run Terraform from the [`aws-iac`](https://github.com/usekarma/aws-iac) repo. It reads the configuration from Parameter Store and builds the required AWS infrastructure.
 
 All infrastructure is driven by config. Nothing gets deployed unless it’s defined in Parameter Store.
 
@@ -80,8 +80,8 @@ This Quickstart includes the following components:
 
     Note: `"site_name"` should always be the actual domain name, even if you're not using a custom domain. This value is used internally for S3 bucket naming and CloudFront aliases.
 
-- **Otherwise**, deploy the [`route53-zone`](https://github.com/tstrall/aws-iac/tree/main/components/route53-zone) component to configure AWS Route 53 as your domain’s DNS name server. That page also includes instructions for delegating DNS from GoDaddy.
-  - Use the existing [`strall-com` config](https://github.com/tstrall/aws-config/blob/main/iac/prod/route53-zone/strall-com/config.json) as a reference.
+- **Otherwise**, deploy the [`route53-zone`](https://github.com/usekarma/aws-iac/tree/main/components/route53-zone) component to configure AWS Route 53 as your domain’s DNS name server. That page also includes instructions for delegating DNS from GoDaddy.
+  - Use the existing [`strall-com` config](https://github.com/usekarma/aws-config/blob/main/iac/prod/route53-zone/strall-com/config.json) as a reference.
   - That example includes an `MX` record for forwarding email through [ImprovMX](https://improvmx.com/).
     - **Remove the `MX` record** if you don’t want email forwarding.
     - **Otherwise**, create a free account on [ImprovMX](https://improvmx.com/) to enable email forwarding for your domain.
@@ -104,7 +104,7 @@ AWS_PROFILE=dev-iac ./scripts/deploy.sh route53-zone <nickname>
 
 - Define your website configuration in:
   `aws-config/iac/<ENV>/serverless-site/<NICKNAME>/config.json`
-- Use the [`strall-com` example](https://github.com/tstrall/aws-config/blob/main/iac/prod/serverless-site/strall-com/config.json) as a reference.
+- Use the [`strall-com` example](https://github.com/usekarma/aws-config/blob/main/iac/prod/serverless-site/strall-com/config.json) as a reference.
 
 To deploy:
 
@@ -131,7 +131,7 @@ This will remove the deployed AWS resources but **will not delete** your config 
 
 ### 3. Deploy Static Website
 
-- See the [strall.com](https://github.com/tstrall/strall.com) repository for a static site example.
+- See the [strall.com](https://github.com/usekarma/strall.com) repository for a static site example.
 
 To publish your content:
 
@@ -181,9 +181,9 @@ aws-iac/
 
 ## Repositories Involved
 
-- [`aws-iac`](https://github.com/tstrall/aws-iac) – Terraform modules  
-- [`aws-config`](https://github.com/tstrall/aws-config) – JSON-based configuration definitions  
-- [`strall.com`](https://github.com/tstrall/strall.com) – Example static site and publishing workflow  
+- [`aws-iac`](https://github.com/usekarma/aws-iac) – Terraform modules  
+- [`aws-config`](https://github.com/usekarma/aws-config) – JSON-based configuration definitions  
+- [`strall.com`](https://github.com/usekarma/strall.com) – Example static site and publishing workflow  
 
 ---
 
