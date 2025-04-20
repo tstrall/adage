@@ -1,0 +1,18 @@
+{
+  "organizational_units": [
+    {
+      "environment": "dev",
+      "email": "dev@example.com"
+    },
+    {
+      "environment": "prod",
+      "email": "prod@example.com"
+    }
+  ],
+  "accounts": [
+    "config",
+    "lambda",
+    "iac",
+    "network"
+  ]
+}
