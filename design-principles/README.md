@@ -55,13 +55,13 @@ This enables independent testing, deployment, and versioning.
 Terraform modules receive a nickname and resolve their config from:
 
 ```
-/aws/<component>/<nickname>/config
+/iac/<component>/<nickname>/config
 ```
 
 ...and write their runtime outputs to:
 
 ```
-/aws/<component>/<nickname>/runtime
+/iac/<component>/<nickname>/runtime
 ```
 
 No component "knows" whether it’s in dev, qa, or prod — the config defines that.

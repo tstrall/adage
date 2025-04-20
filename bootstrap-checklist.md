@@ -33,7 +33,7 @@ See: [Identity Center Setup](./identity-center/README.md)
 - [ ] Enable Organizations from the management account
 - [ ] Create organizational units (e.g., `dev`, `prod`)
 - [ ] Create member accounts under those OUs
-- [ ] In each account, create the `/aws-config/environment` parameter in Parameter Store
+- [ ] In each account, create the `/iac/environment` parameter in Parameter Store
 
 See: [Organization Structure](./org-structure/README.md)
 
